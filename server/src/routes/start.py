@@ -1,16 +1,13 @@
 import flask
-from flask_socketio import SocketIO
-from src.routes import signup
+from src.routes import signup, messages
 
 app = flask.Flask(__name__)
 
 signup.create_route(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+messages.create_route(app)
 
-@socketio.on("connect")
 def connected():
     print("CONNECTED")
 
 def start_listening():
-    socketio.run(app)
-    #app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080)
