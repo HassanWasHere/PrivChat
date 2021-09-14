@@ -13,9 +13,16 @@ def create_route(app):
             user = users.User.create_from_username(auth.username)
             if password_hash.verify_user(user, auth.password):
                 if request.method == "GET":
+                    conversations = dict()
                     print(user.get_messages())
                     if user.get_messages():
-                        return json.dumps(user.get_messages())
+                        for msg in user.get_messages():
+                            print(msg.__dict__)
+                            if not msg.recipient_id in conversations:
+                                conversations[msg.recipient_id] = [msg.__dict__]
+                            else:
+                                conversations[msg.recipient_id].append(msg.__dict__)
+                        return json.dumps(conversations)
                     else:
                         return "no messages"
                 elif request.method == "POST":
