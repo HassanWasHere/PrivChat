@@ -13,7 +13,7 @@ class InputBox {
     @override
     Widget build(BuildContext context) {
         return Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             height: 70,
             child: TextField(
                 obscureText: password,
