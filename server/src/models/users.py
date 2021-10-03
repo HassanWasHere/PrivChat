@@ -18,13 +18,12 @@ class User:
         self.last_seen = last_seen
         self.avatar = avatar
         self.valid_session = False
-        self.db = dbhandler.Database("privchat.db")
+        self.__db = dbhandler.Database("privchat.db")
     def get_messages(self):
-        messages = self.db.execute("SELECT * from messages WHERE sender_id=? OR recipient_id=?", [self.user_id, self.user_id]).fetchall()
+        messages = self.__db.execute("SELECT * from messages WHERE sender_id=? OR recipient_id=?", [self.user_id, self.user_id]).fetchall()
         messages_comp = []
         for message in messages:
             messages_comp.append(Message(message[0], message[1], message[2], message[3], message[4]))
         return messages_comp
-
     def send_message(self, recipient_id, content):
-        return self.db.execute("INSERT INTO messages (content, time_sent, sender_id, recipient_id) VALUES (?,?,?,?)", [content, time(), self.user_id, recipient_id])
+        return self.__db.execute("INSERT INTO messages (content, time_sent, sender_id, recipient_id) VALUES (?,?,?,?)", [content, time(), self.user_id, recipient_id])
