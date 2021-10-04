@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
+import '../../api/handler.dart';
 class SignupPage extends StatefulWidget {
     
     SignupPage({Key? key}) : super(key: key);
@@ -10,11 +11,22 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageWithState extends State<SignupPage> {
+    final errorController = TextEditingController();
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
+    NetHandler handler = NetHandler();
 
-    void donothing(){}
+    void SignupRequest(BuildContext ctx){
+        if (passwordController.text == confirmPasswordController.text){
+            handler.Signup(usernameController.text, passwordController.text).then((erg) => usernameController.text = "$erg");
+            
+            //usernameController.text = Resp;
+        } else {
+            usernameController.text = "not matching";
+        }
+    }
+    void donothing(BuildContext ctx){}
 
     @override
     Widget build(BuildContext ctx){
@@ -43,7 +55,10 @@ class _SignupPageWithState extends State<SignupPage> {
                             InputBox(false, "Username", usernameController).build(ctx),
                             InputBox(true, "Password", passwordController).build(ctx),
                             InputBox(true, "Confirm Password", confirmPasswordController).build(ctx),
-                            LargeButton(65.0, double.infinity, "Sign up", donothing).build(ctx),
+                            SizedBox(height: 15.0),
+                            Text("By signing up for this service, you agree to the Terms and Conditions"),
+                            SizedBox(height: 15.0),
+                            LargeButton(65.0, double.infinity, "Sign up", SignupRequest).build(ctx),
                             SizedBox(height: 10.0),
                             Text("Already a user?"),
                             LargeButton(65.0, 240.0, "Login", donothing).build(ctx),

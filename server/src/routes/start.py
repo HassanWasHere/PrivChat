@@ -2,12 +2,10 @@ import flask
 from src.routes import signup, messages
 
 app = flask.Flask(__name__)
+app.debug = True
 
 signup.create_route(app)
 messages.create_route(app)
 
-def connected():
-    print("CONNECTED")
-
 def start_listening():
-    app.run(host="0.0.0.0", port=8080)
+    app.run(port=8080)

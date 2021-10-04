@@ -11,20 +11,23 @@ def create_route(app):
         last_try = (request.remote_addr in recent_addr and recent_addr[request.remote_addr]) or 0
         if last_try < time.time():
             recent_addr[request.remote_addr] = time.time()
-            username = validate_input.username(request.form["username"])
-            password = validate_input.password(request.form["password"])
+            request_data = request.get_json()
+            username = validate_input.username(request_data["username"])
+            password = validate_input.password(request_data["password"])
             if username and password: 
                 password = password_hash.hash_password(password)
                 db = dbhandler.Database("privchat.db")
                 users_with_name = db.execute("SELECT * FROM users WHERE username=?", [username]).fetchall()
+                print(users_with_name)
                 if len(users_with_name) == 0:
+                    print("HELLO?")
                     db.execute("INSERT INTO users (username, password, last_seen) VALUES (?, ?, ?)", [username, password, 0])
-                    return "attempted to insert"
+                    return "Sucessfully inserted value", 200
                 else:
-                    return "user with name already exists"
+                    return "User with name already exists", 403
             else:
-                return "no user and pass"
+                return "No user and pass", 405
         else:
-            return "ratelimit"
+            return "Ratelimit", 406
             
 
