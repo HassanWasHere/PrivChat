@@ -3,12 +3,9 @@ class LargeButton {
     double height = 65.0;
     double width = double.infinity;
     String text = "ERROR";
+    void Function(BuildContext) callback;
 
-    LargeButton(double height, double width, String text){
-        this.height = height;
-        this.width = width;
-        this.text = text;
-    }
+    LargeButton(this.height, this.width, this.text, this.callback);
 
     @override
     Widget build(BuildContext ctx){
@@ -22,7 +19,7 @@ class LargeButton {
                 color: Colors.blue,
                 child: MaterialButton(
                     padding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-                    onPressed: (){},
+                    onPressed: (){this.callback(ctx);},
                     child: Text(text,
                         textAlign: TextAlign.center,
                         style: TextStyle(

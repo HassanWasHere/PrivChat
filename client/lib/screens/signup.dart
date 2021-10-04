@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
-import 'signup.dart';
-class LoginPage extends StatefulWidget {
+class SignupPage extends StatefulWidget {
     
-    LoginPage({Key? key}) : super(key: key);
+    SignupPage({Key? key}) : super(key: key);
 
     @override
-    _LoginPageWithState createState() =>  _LoginPageWithState();
+    _SignupPageWithState createState() =>  _SignupPageWithState();
 }
 
-
-class _LoginPageWithState extends State<LoginPage> {
+class _SignupPageWithState extends State<SignupPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
 
-    Route _SignupTransitionRoute() {
-        return PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => SignupPage(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return child;
-            },
-        );
-    }
-
-    void SignupTransition(BuildContext ctx){
-        
-        Navigator.of(ctx).push(_SignupTransitionRoute());
-    }
+    void donothing(){}
 
     @override
     Widget build(BuildContext ctx){
@@ -55,10 +42,11 @@ class _LoginPageWithState extends State<LoginPage> {
                             SizedBox(height: 36.0),
                             InputBox(false, "Username", usernameController).build(ctx),
                             InputBox(true, "Password", passwordController).build(ctx),
-                            LargeButton(65.0, double.infinity, "Login", SignupTransition).build(ctx),
+                            InputBox(true, "Confirm Password", confirmPasswordController).build(ctx),
+                            LargeButton(65.0, double.infinity, "Sign up", donothing).build(ctx),
                             SizedBox(height: 10.0),
-                            Text("Not a user yet?"),
-                            LargeButton(65.0, 240.0, "Sign up", SignupTransition).build(ctx),
+                            Text("Already a user?"),
+                            LargeButton(65.0, 240.0, "Login", donothing).build(ctx),
                         ]
                     )
                 )
