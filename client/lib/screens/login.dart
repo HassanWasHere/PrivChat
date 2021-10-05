@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import 'signup.dart';
+import 'transition.dart';
 class LoginPage extends StatefulWidget {
     
     LoginPage({Key? key}) : super(key: key);
@@ -15,18 +16,8 @@ class _LoginPageWithState extends State<LoginPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
 
-    Route _SignupTransitionRoute() {
-        return PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => SignupPage(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return child;
-            },
-        );
-    }
-
     void SignupTransition(BuildContext ctx){
-        
-        Navigator.of(ctx).push(_SignupTransitionRoute());
+        TransitionHandler().Transition(ctx, SignupPage());
     }
 
     @override

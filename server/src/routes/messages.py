@@ -32,11 +32,11 @@ def create_route(app):
                     if recipient and content:
                         try:
                             user.send_message(recipient.user_id, content)
-                            return "success"
+                            return "success", 200
                         except:
-                            return "an error occured"
+                            return "an error occured", 401
                     else:
-                        return "no recipient/content"
+                        return "no recipient/content", 401
             else:
                 abort(401)
         else:

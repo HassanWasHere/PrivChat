@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
-import '../../api/handler.dart';
+import '../../api/network.dart';
 class SignupPage extends StatefulWidget {
     
     SignupPage({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageWithState extends State<SignupPage> {
-    final errorController = TextEditingController();
+    String errorMessage = "";
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
@@ -19,7 +19,7 @@ class _SignupPageWithState extends State<SignupPage> {
 
     void SignupRequest(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
-            handler.Signup(usernameController.text, passwordController.text).then((erg) => usernameController.text = "$erg");
+            handler.Signup(usernameController.text, passwordController.text).then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
             
             //usernameController.text = Resp;
         } else {
@@ -52,6 +52,7 @@ class _SignupPageWithState extends State<SignupPage> {
                                 )
                             ),
                             SizedBox(height: 36.0),
+                            Text('$errorMessage'),
                             InputBox(false, "Username", usernameController).build(ctx),
                             InputBox(true, "Password", passwordController).build(ctx),
                             InputBox(true, "Confirm Password", confirmPasswordController).build(ctx),
