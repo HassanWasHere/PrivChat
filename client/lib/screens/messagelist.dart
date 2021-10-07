@@ -9,5 +9,7 @@ class MessageListPage extends StatefulWidget {
 
 
 class _MessageListPageWithState extends State<MessageListPage> {
-    
+    Widget build(BuildContext ctx){
+        return Scaffold();
+    }
 }
