@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 class MessageListPage extends StatefulWidget {
-    
     MessageListPage({Key? key}) : super(key: key);
 
     @override

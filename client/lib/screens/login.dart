@@ -3,6 +3,8 @@ import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import 'signup.dart';
 import 'transition.dart';
+import '../../api/network.dart';
+import 'messagelist.dart';
 class LoginPage extends StatefulWidget {
     
     LoginPage({Key? key}) : super(key: key);
@@ -15,9 +17,27 @@ class LoginPage extends StatefulWidget {
 class _LoginPageWithState extends State<LoginPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
+    String Response = '';
+    NetHandler handler = NetHandler();
 
     void SignupTransition(BuildContext ctx){
         TransitionHandler().Transition(ctx, SignupPage());
+    }
+    void MessageListTransition(BuildContext ctx){
+        TransitionHandler().Transition(ctx, MessageListPage(Response));
+    }
+
+    void ProcessLogin(BuildContext ctx){
+        handler.GetConversations(usernameController.text, passwordController.text).then((erg) => 
+            setState((){
+                    Response = erg.ErrorMessage;
+                    usernameController.text = Response;
+                    if (erg.Success){
+                        MessageListTransition(ctx);
+                    }
+                }
+            )
+        );
     }
 
     @override
@@ -46,7 +66,7 @@ class _LoginPageWithState extends State<LoginPage> {
                             SizedBox(height: 36.0),
                             InputBox(false, "Username", usernameController).build(ctx),
                             InputBox(true, "Password", passwordController).build(ctx),
-                            LargeButton(65.0, double.infinity, "Login", SignupTransition).build(ctx),
+                            LargeButton(65.0, double.infinity, "Login", ProcessLogin).build(ctx),
                             SizedBox(height: 10.0),
                             Text("Not a user yet?"),
                             LargeButton(65.0, 240.0, "Sign up", SignupTransition).build(ctx),

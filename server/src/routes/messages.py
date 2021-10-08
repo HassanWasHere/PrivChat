@@ -38,9 +38,9 @@ def create_route(app):
                     else:
                         return "no recipient/content", 401
             else:
-                abort(401)
+                return "incorrect username or password", 404
         else:
-            abort(401)
+            return "please enter credentials", 404
 
         
             

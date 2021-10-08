@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import '../../api/network.dart';
+import 'transition.dart';
+import 'login.dart';
 class SignupPage extends StatefulWidget {
     
     SignupPage({Key? key}) : super(key: key);
@@ -25,6 +27,10 @@ class _SignupPageWithState extends State<SignupPage> {
         } else {
             usernameController.text = "not matching";
         }
+    }
+
+    void LoginTransition(BuildContext ctx){
+        TransitionHandler().Transition(ctx, LoginPage());
     }
     void donothing(BuildContext ctx){}
 
@@ -62,7 +68,7 @@ class _SignupPageWithState extends State<SignupPage> {
                             LargeButton(65.0, double.infinity, "Sign up", SignupRequest).build(ctx),
                             SizedBox(height: 10.0),
                             Text("Already a user?"),
-                            LargeButton(65.0, 240.0, "Login", donothing).build(ctx),
+                            LargeButton(65.0, 240.0, "Login", LoginTransition).build(ctx),
                         ]
                     )
                 )

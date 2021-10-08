@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,8 +13,9 @@ class HttpPostResponse {
     HttpPostResponse(this.Success, this.ErrorMessage);
 }
 
+
 class NetHandler {
-    final String API_ENDPOINT_URL = "http://localhost:8080";
+    final String API_ENDPOINT_URL = "https://8080-azure-rook-8nuofwsm.ws-eu18.gitpod.io";
 
     Future<HttpPostResponse> Signup(String username, String password) async {
         final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 
@@ -26,6 +28,16 @@ class NetHandler {
                 'password': password,
                 'pubkey': "NOT_IMPL"
             })
+        );
+        return HttpPostResponse(response.statusCode == 200, response.body);
+    }
+
+    Future<HttpPostResponse> GetConversations(String username, String password) async {
+        final response = await http.get(Uri.parse('$API_ENDPOINT_URL/messages'), 
+            headers: <String, String>{
+                'Access-Control-Allow-Origin': '*',
+                HttpHeaders.authorizationHeader: 'Basic username=$username&password=$password',
+            },
         );
         return HttpPostResponse(response.statusCode == 200, response.body);
     }
