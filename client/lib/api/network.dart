@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../objects/messages.dart';
+import 'encrypt.dart';
 
 class HttpPostResponse {
     bool Success = false;
@@ -15,7 +16,7 @@ class HttpPostResponse {
 
 
 class NetHandler {
-    final String API_ENDPOINT_URL = "https://8080-azure-rook-8nuofwsm.ws-eu18.gitpod.io";
+    final String API_ENDPOINT_URL = "https://8080-pink-rodent-nhjr1pzu.ws-eu18.gitpod.io";
 
     Future<HttpPostResponse> Signup(String username, String password) async {
         final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 
@@ -36,7 +37,7 @@ class NetHandler {
         final response = await http.get(Uri.parse('$API_ENDPOINT_URL/messages'), 
             headers: <String, String>{
                 'Access-Control-Allow-Origin': '*',
-                HttpHeaders.authorizationHeader: 'Basic username=$username&password=$password',
+                HttpHeaders.authorizationHeader: 'Basic '+ EncryptionHandler().ToBase64("$username:$password"),
             },
         );
         return HttpPostResponse(response.statusCode == 200, response.body);

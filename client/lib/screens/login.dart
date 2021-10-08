@@ -24,7 +24,9 @@ class _LoginPageWithState extends State<LoginPage> {
         TransitionHandler().Transition(ctx, SignupPage());
     }
     void MessageListTransition(BuildContext ctx){
-        TransitionHandler().Transition(ctx, MessageListPage(Response));
+        MessageListPage page = MessageListPage();
+        page.setResponseData(Response);
+        TransitionHandler().Transition(ctx, page);
     }
 
     void ProcessLogin(BuildContext ctx){
