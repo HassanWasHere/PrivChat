@@ -18,17 +18,28 @@ class MessageListPage extends StatefulWidget {
 class _MessageListPageWithState extends State<MessageListPage> {
     var Conversations = <Conversation>[];
     void loadConversations(){
-        var conversationsJSON = jsonDecode(widget.Response); // Map<sender_id, <Conversation>>
-        conversationsJSON.forEach((sender_id, message_list){
-            Conversations.add(
-                Conversation(int.parse(sender_id), message_list)
-            );
+        setState((){
+            var conversationsJSON = jsonDecode(widget.Response); // Map<sender_id, <Conversation>>
+            conversationsJSON.forEach((sender_id, message_list){
+                Conversations.add(
+                    Conversation(int.parse(sender_id), message_list)
+                );
+            });
         });
     }
-    Widget build(BuildContext ctx){
+    void initState(){
         loadConversations();
+    }
+    Widget build(BuildContext ctx){
         return Scaffold(
-            body: Text(widget.Response)
+            body: ListView.builder(
+                itemCount: Conversations.length,
+                itemBuilder: (context, index) {
+                    return ListTile(
+                        title: Text(Conversations[index].messages[0].content),
+                    );
+                },
+            ),
         );
     }
 }
