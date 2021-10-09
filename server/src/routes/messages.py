@@ -18,10 +18,10 @@ def create_route(app):
                     if user.get_messages():
                         for msg in user.get_messages():
                             print(msg.__dict__)
-                            if not msg.sender_id in conversations:
-                                conversations[msg.sender_id] = [msg.__dict__]
+                            if not int(msg.sender_id) in conversations:
+                                conversations[int(msg.sender_id)] = [msg.__dict__]
                             else:
-                                conversations[msg.sender_id].append(msg.__dict__)
+                                conversations[int(msg.sender_id)].append(msg.__dict__)
                         return json.dumps(conversations)
                     else:
                         return "no messages"

@@ -16,7 +16,7 @@ class HttpPostResponse {
 
 
 class NetHandler {
-    final String API_ENDPOINT_URL = "https://8080-pink-rodent-nhjr1pzu.ws-eu18.gitpod.io";
+    final String API_ENDPOINT_URL = "https://8080-kumquat-zebra-ta19qr4x.ws-eu18.gitpod.io";
 
     Future<HttpPostResponse> Signup(String username, String password) async {
         final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 

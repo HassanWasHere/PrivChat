@@ -16,10 +16,14 @@ class MessageListPage extends StatefulWidget {
 
 
 class _MessageListPageWithState extends State<MessageListPage> {
-    var ConversationsJSON = jsonDecode(widget.Response);
-    var Conversations;
+    var Conversations = <Conversation>[];
     void loadConversations(){
-        Conversation.FromJSON();
+        var conversationsJSON = jsonDecode(widget.Response); // Map<sender_id, <Conversation>>
+        conversationsJSON.forEach((sender_id, message_list){
+            Conversations.add(
+                Conversation(int.parse(sender_id), message_list)
+            );
+        });
     }
     Widget build(BuildContext ctx){
         loadConversations();
