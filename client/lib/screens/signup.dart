@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import '../../api/network.dart';
+import '../../handlers/encrypt.dart';
 import 'transition.dart';
 import 'login.dart';
 class SignupPage extends StatefulWidget {
@@ -18,14 +19,16 @@ class _SignupPageWithState extends State<SignupPage> {
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
     NetHandler handler = NetHandler();
-
+    EncryptionHandler encrypt = EncryptionHandler();
     void SignupRequest(BuildContext ctx){
+        encrypt.GeneratePubPrivKeyPair().then((list) => setState(()=> errorMessage=list[1].length.toString()));
+    }
+
+    void SignupRequest2(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
             handler.Signup(usernameController.text, passwordController.text).then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
-            
-            //usernameController.text = Resp;
         } else {
-            usernameController.text = "not matching";
+            setState(() => errorMessage = "not matching");
         }
     }
 

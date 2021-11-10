@@ -16,9 +16,9 @@ class HttpPostResponse {
 
 
 class NetHandler {
-    final String API_ENDPOINT_URL = "https://8080-kumquat-zebra-ta19qr4x.ws-eu18.gitpod.io";
+    final String API_ENDPOINT_URL = String.fromEnvironment("GITPOD_WORKSPACE_URL");
 
-    Future<HttpPostResponse> Signup(String username, String password) async {
+    Future<HttpPostResponse> Signup(String username, String password, String pubkey) async {
         final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 
             headers: <String, String>{
                 'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ class NetHandler {
             body: jsonEncode(<String, String>{
                 'username': username,
                 'password': password,
-                'pubkey': "NOT_IMPL"
+                'pubkey': pubkey,
             })
         );
         return HttpPostResponse(response.statusCode == 200, response.body);

@@ -3,3 +3,6 @@ def username(inp):
 
 def password(inp):
     return inp
+
+def pubkey(inp):
+    return inp

@@ -35,8 +35,11 @@ class _MessageListPageWithState extends State<MessageListPage> {
             body: ListView.builder(
                 itemCount: Conversations.length,
                 itemBuilder: (context, index) {
+                    var conversation = Conversations[index];
+                    var message = conversation.messages[0]
                     return ListTile(
-                        title: Text(Conversations[index].messages[0].content),
+                        title: Text(conversation.sender_id.username),
+                        subtitle: message.content
                     );
                 },
             ),
