@@ -3,7 +3,8 @@ import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import 'signup.dart';
 import 'transition.dart';
-import '../../api/network.dart';
+import '../../api/user.dart' as userAPI;
+import '../../api/message.dart' as messageAPI;
 import 'messagelist.dart';
 class LoginPage extends StatefulWidget {
     
@@ -18,7 +19,6 @@ class _LoginPageWithState extends State<LoginPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     String Response = '';
-    NetHandler handler = NetHandler();
 
     void SignupTransition(BuildContext ctx){
         TransitionHandler().Transition(ctx, SignupPage());
@@ -30,7 +30,7 @@ class _LoginPageWithState extends State<LoginPage> {
     }
 
     void ProcessLogin(BuildContext ctx){
-        handler.GetConversations(usernameController.text, passwordController.text).then((erg) => 
+        messageAPI.GetConversations(usernameController.text, passwordController.text).then((erg) => 
             setState((){
                     Response = erg.ErrorMessage;
                     usernameController.text = Response;

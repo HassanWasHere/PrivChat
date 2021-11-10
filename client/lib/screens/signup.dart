@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
-import '../../api/network.dart';
+import '../../api/user.dart' as userAPI;
 import '../../handlers/encrypt.dart';
 import 'transition.dart';
 import 'login.dart';
@@ -18,7 +18,6 @@ class _SignupPageWithState extends State<SignupPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
-    NetHandler handler = NetHandler();
     EncryptionHandler encrypt = EncryptionHandler();
     void SignupRequest(BuildContext ctx){
         encrypt.GeneratePubPrivKeyPair().then((list) => setState(()=> errorMessage=list[1].length.toString()));
@@ -26,7 +25,7 @@ class _SignupPageWithState extends State<SignupPage> {
 
     void SignupRequest2(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
-            handler.Signup(usernameController.text, passwordController.text).then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
+            userAPI.Signup(usernameController.text, passwordController.text, "fornow").then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
         } else {
             setState(() => errorMessage = "not matching");
         }

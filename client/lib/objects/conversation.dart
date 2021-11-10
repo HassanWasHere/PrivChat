@@ -1,13 +1,13 @@
-import '../api/network.dart';
+//import '../api/network.dart';
 import 'messages.dart';
 import 'user.dart';
 import 'package:flutter/material.dart';
 class Conversation {
-    num sender_id = 0;
+    User other_user = User("ERROR", -1);
     var messages = <Message>[];
 
-    Conversation(num sender_id, got_messages){
-        this.sender_id = sender_id;
+    Conversation(User other_user, got_messages){
+        this.other_user = other_user;
         got_messages.forEach((message){
             messages.add(Message(message['message_id'], message['content'], User("a",0), User("b",2)));
         });

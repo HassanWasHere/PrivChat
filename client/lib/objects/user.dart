@@ -1,4 +1,4 @@
-import '../api/network.dart';
+//import '../api/network.dart';
 import 'messages.dart';
 class User {
     String username;

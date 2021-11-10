@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../objects/conversation.dart';
 import 'dart:convert';
+import '../objects/user.dart';
 class MessageListPage extends StatefulWidget {
     MessageListPage({Key? key}) : super(key: key);
 
@@ -22,7 +23,7 @@ class _MessageListPageWithState extends State<MessageListPage> {
             var conversationsJSON = jsonDecode(widget.Response); // Map<sender_id, <Conversation>>
             conversationsJSON.forEach((sender_id, message_list){
                 Conversations.add(
-                    Conversation(int.parse(sender_id), message_list)
+                    Conversation(User("a", int.parse(sender_id)), message_list)
                 );
             });
         });
@@ -36,10 +37,10 @@ class _MessageListPageWithState extends State<MessageListPage> {
                 itemCount: Conversations.length,
                 itemBuilder: (context, index) {
                     var conversation = Conversations[index];
-                    var message = conversation.messages[0]
+                    var message = conversation.messages[0];
                     return ListTile(
-                        title: Text(conversation.sender_id.username),
-                        subtitle: message.content
+                        title: Text(conversation.other_user.username),
+                        subtitle: Text(message.content)
                     );
                 },
             ),
