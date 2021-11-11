@@ -24,7 +24,7 @@ def create_route(app):
                                 conversations[int(msg.sender_id)].append(msg.__dict__)
                         return json.dumps(conversations)
                     else:
-                        return "no messages"
+                        return {}
                 elif request.method == "POST":
                     content = request.form.get("content")
                     recipient_name = request.form.get("recipient")

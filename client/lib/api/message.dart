@@ -18,7 +18,6 @@ Future<HttpPostResponse> GetConversations(String username, String password) asyn
             HttpHeaders.authorizationHeader: 'Basic '+ EncryptionHandler().ToBase64("$username:$password"),
         },
     );
-    print([response.body, response.statusCode, API_ENDPOINT_URL].toString());
     return HttpPostResponse(response.statusCode == 200, response.body);
 }
 
