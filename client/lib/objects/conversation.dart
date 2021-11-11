@@ -9,8 +9,9 @@ class Conversation {
     Conversation(User other_user, got_messages){
         this.other_user = other_user;
         got_messages.forEach((message){
+            print(message.toString());
             User(message.sender_id).createUserFromID().then((sender){
-                User(message.reicpient_id).createUserFromID().then((recipient){
+                User(message.recipient_id).createUserFromID().then((recipient){
                     messages.add(Message(message['message_id'], message['content'], sender, recipient));
                 });
             });

@@ -20,7 +20,7 @@ class _MessageListPageWithState extends State<MessageListPage> {
     var Conversations = <Conversation>[];
     void loadConversations(){
         setState((){
-            var conversationsJSON = jsonDecode(widget.Response) as Map<String, dynamic>;
+            var conversationsJSON = jsonDecode(widget.Response);
             conversationsJSON.forEach((sender_id, message_list){
                 Conversations.add(
                     Conversation(User(int.parse(sender_id)), message_list)
