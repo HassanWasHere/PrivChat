@@ -9,7 +9,7 @@ import '../../objects/messages.dart';
 import '../../objects/httppostresponse.dart';
 import '../../handlers/encrypt.dart';
 
-final String API_ENDPOINT_URL = String.fromEnvironment("GITPOD_WORKSPACE_URL");
+const String API_ENDPOINT_URL = String.fromEnvironment("GITPOD_WORKSPACE_URL");
 
 Future<HttpPostResponse> Signup(String username, String password, String pubkey) async {
     final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 

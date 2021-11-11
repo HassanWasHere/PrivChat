@@ -19,11 +19,11 @@ class _SignupPageWithState extends State<SignupPage> {
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
     EncryptionHandler encrypt = EncryptionHandler();
-    void SignupRequest(BuildContext ctx){
+    void SignupRequest2(BuildContext ctx){
         encrypt.GeneratePubPrivKeyPair().then((list) => setState(()=> errorMessage=list[1].length.toString()));
     }
 
-    void SignupRequest2(BuildContext ctx){
+    void SignupRequest(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
             userAPI.Signup(usernameController.text, passwordController.text, "fornow").then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
         } else {
