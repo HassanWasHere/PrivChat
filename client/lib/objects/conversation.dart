@@ -4,11 +4,12 @@ import 'user.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 class Conversation {
-    User other_user = User(-1);
+    User other_user = User(-1, "ERROR");
     var messages = <Message>[];
 
-    void addMessage(message, User sender, User recipient){
-        messages.add(Message(message['message_id'], message['content'], sender, recipient));
+    void addMessage(num message_id, String content, User sender, User recipient){
+        print("ADDING MESSAGES");
+        messages.add(Message(message_id, content, sender, recipient));
     }
 
     Conversation(User other_user){

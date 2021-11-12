@@ -5,6 +5,7 @@ import 'signup.dart';
 import 'transition.dart';
 import '../../api/user.dart' as userAPI;
 import '../../api/message.dart' as messageAPI;
+import '../../objects/client.dart';
 import 'messagelist.dart';
 class LoginPage extends StatefulWidget {
     
@@ -26,15 +27,17 @@ class _LoginPageWithState extends State<LoginPage> {
     void MessageListTransition(BuildContext ctx){
         MessageListPage page = MessageListPage();
         page.setResponseData(Response);
-        Client thisUser = Client(usernameController, passwordController, -1);
-        TransitionHandler().Transition(ctx, page);
+        userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
+            page.setClientData(thisUser);
+            TransitionHandler().Transition(ctx, page);
+        });
+        
     }
 
     void ProcessLogin(BuildContext ctx){
         messageAPI.GetConversations(usernameController.text, passwordController.text).then((erg) => 
             setState((){
                 Response = erg.ErrorMessage;
-                usernameController.text = Response;
                 if (erg.Success){
                     MessageListTransition(ctx);
                 }

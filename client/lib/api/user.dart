@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../objects/messages.dart';
 import '../../objects/user.dart';
+import '../../objects/client.dart';
 import '../../objects/httppostresponse.dart';
 import '../../handlers/encrypt.dart';
 
@@ -45,6 +46,16 @@ Future<User> createUserFromUsername(String user_name) async {
         },
     );
     var userData = jsonDecode(response.body);
-    this.username = userData[0];
-    return this;
+    return User(userData[0], user_name);
+}
+
+Future<Client> createClientFromUsernameAndPassword(String user_name, String password) async {
+    print('$API_ENDPOINT_URL/user?username=$user_name');
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?username=$user_name'), 
+        headers: <String, String>{
+            'Access-Control-Allow-Origin': '*',
+        },
+    );
+    var userData = jsonDecode(response.body);
+    return Client(user_name, password, userData[0]);
 }
