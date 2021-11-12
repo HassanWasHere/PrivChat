@@ -26,19 +26,19 @@ class _LoginPageWithState extends State<LoginPage> {
     void MessageListTransition(BuildContext ctx){
         MessageListPage page = MessageListPage();
         page.setResponseData(Response);
+        Client thisUser = Client(usernameController, passwordController, -1);
         TransitionHandler().Transition(ctx, page);
     }
 
     void ProcessLogin(BuildContext ctx){
         messageAPI.GetConversations(usernameController.text, passwordController.text).then((erg) => 
             setState((){
-                    Response = erg.ErrorMessage;
-                    usernameController.text = Response;
-                    if (erg.Success){
-                        MessageListTransition(ctx);
-                    }
+                Response = erg.ErrorMessage;
+                usernameController.text = Response;
+                if (erg.Success){
+                    MessageListTransition(ctx);
                 }
-            )
+            })
         );
     }
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../objects/messages.dart';
+import '../../objects/user.dart';
 import '../../objects/httppostresponse.dart';
 import '../../handlers/encrypt.dart';
 
@@ -24,4 +25,26 @@ Future<HttpPostResponse> Signup(String username, String password, String pubkey)
         })
     );
     return HttpPostResponse(response.statusCode == 200, response.body);
+}
+
+
+Future<User> createUserFromID(num user_id) async {
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?id=$user_id'), 
+        headers: <String, String>{
+            'Access-Control-Allow-Origin': '*',
+        },
+    );
+    var userData = jsonDecode(response.body);
+    return User(user_id, userData[0]);
+}
+
+Future<User> createUserFromUsername(String user_name) async {
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?username=$user_name'), 
+        headers: <String, String>{
+            'Access-Control-Allow-Origin': '*',
+        },
+    );
+    var userData = jsonDecode(response.body);
+    this.username = userData[0];
+    return this;
 }
