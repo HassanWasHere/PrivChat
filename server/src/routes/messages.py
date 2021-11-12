@@ -17,10 +17,14 @@ def create_route(app):
                     print(user.get_messages())
                     if user.get_messages():
                         for msg in user.get_messages():
-                            if not int(msg.sender_id) in conversations:
-                                conversations[int(msg.sender_id)] = [msg.__dict__]
+                            if msg.sender_id == user.user_id:
+                                other_user_id = msg.recipient_id
                             else:
-                                conversations[int(msg.sender_id)].append(msg.__dict__)
+                                other_user_id = msg.sender_id
+                            if not int(other_user_id) in conversations:
+                                conversations[int(other_user_id)] = [msg.__dict__]
+                            else:
+                                conversations[int(other_user_id)].append(msg.__dict__)
                         return json.dumps(conversations)
                     else:
                         return {}
