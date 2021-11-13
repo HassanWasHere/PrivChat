@@ -5,6 +5,8 @@ import '../objects/user.dart';
 import '../objects/messages.dart';
 import '../objects/client.dart';
 import '../api/user.dart' as UserAPI;
+import 'transition.dart' as TransitionHandler;
+import 'message.dart';
 class MessageListPage extends StatefulWidget {
     MessageListPage({Key? key}) : super(key: key);
 
@@ -28,12 +30,9 @@ class _MessageListPageWithState extends State<MessageListPage> {
     var Conversations = <Conversation>[];
     String test = '';
     void loadConversations(){
-        print("SET STATE?");
         var conversationsJSON = jsonDecode(widget.Response);
-        print("GOT CONVO DATA");
         conversationsJSON.forEach((other_user_id, message_list){
             UserAPI.createUserFromID(int.parse(other_user_id)).then((otherUser){
-                print("OTHER USER CREATED");
                 var newConversation = Conversation(otherUser);
                 message_list.forEach((message){
                     User sender;
@@ -45,17 +44,21 @@ class _MessageListPageWithState extends State<MessageListPage> {
                         sender = widget.thisUser;
                         recipient = otherUser;
                     }
-                    print("CREATING MESSAGE FROM $sender.name TO $recipient.name WITH CONTENT");
                     newConversation.addMessage(message['message_id'], message['content'], sender, recipient);
                 });
                 setState( () => Conversations.add(newConversation));
-                print("CONVO IS NOW " + Conversations.length.toString());
             });
         });
     }
     void initState(){
         super.initState();
         loadConversations();
+    }
+
+    void showConversation(BuildContext ctx, Conversation conversation){
+        var conversationPage = MessagePage();
+        conversationPage.setConversation(conversation);
+        TransitionHandler.Transition(ctx, conversationPage);
     }
     Widget build(BuildContext ctx){
         print("BUILDING " + Conversations.length.toString());
@@ -74,7 +77,8 @@ class _MessageListPageWithState extends State<MessageListPage> {
                     
                     return ListTile(
                         title: Text(conversation.other_user.username),
-                        subtitle: Text(messageContent)
+                        subtitle: Text(messageContent),
+                        onTap: (){showConversation(ctx, conversation);}
                     );
                 },
             ),

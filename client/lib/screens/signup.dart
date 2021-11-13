@@ -3,7 +3,7 @@ import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import '../../api/user.dart' as userAPI;
 import '../../handlers/encrypt.dart';
-import 'transition.dart';
+import 'transition.dart' as TransitionHandler;
 import 'login.dart';
 class SignupPage extends StatefulWidget {
     
@@ -32,7 +32,7 @@ class _SignupPageWithState extends State<SignupPage> {
     }
 
     void LoginTransition(BuildContext ctx){
-        TransitionHandler().Transition(ctx, LoginPage());
+        TransitionHandler.Transition(ctx, LoginPage());
     }
     void donothing(BuildContext ctx){}
 

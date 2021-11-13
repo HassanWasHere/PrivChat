@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import 'signup.dart';
-import 'transition.dart';
+import 'transition.dart' as TransitionHandler;
 import '../../api/user.dart' as userAPI;
 import '../../api/message.dart' as messageAPI;
 import '../../objects/client.dart';
@@ -22,14 +22,14 @@ class _LoginPageWithState extends State<LoginPage> {
     String Response = '';
 
     void SignupTransition(BuildContext ctx){
-        TransitionHandler().Transition(ctx, SignupPage());
+        TransitionHandler.Transition(ctx, SignupPage());
     }
     void MessageListTransition(BuildContext ctx){
         MessageListPage page = MessageListPage();
         page.setResponseData(Response);
         userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
             page.setClientData(thisUser);
-            TransitionHandler().Transition(ctx, page);
+            TransitionHandler.Transition(ctx, page);
         });
         
     }
