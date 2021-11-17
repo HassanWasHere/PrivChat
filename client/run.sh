@@ -1,1 +1,1 @@
-flutter run --dart-define=GITPOD_WORKSPACE_URL=$(gp url 8080) -d web-server 
+flutter pub get && flutter run --dart-define=GITPOD_WORKSPACE_URL=$(gp url 8080) -d web-server 

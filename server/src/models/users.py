@@ -11,6 +11,14 @@ class User:
             return cls(user[0], user[1], user[2], user[3], user[4])
         else:
             return False
+    @classmethod
+    def create_from_id(cls, user_id):
+        db = dbhandler.Database("privchat.db")
+        user = db.execute("SELECT * FROM users WHERE user_id=?", [user_id]).fetchone()
+        if user:
+            return cls(user[0], user[1], user[2], user[3], user[4])
+        else:
+            return False
     def __init__(self, user_id, username, password, last_seen, avatar):
         self.user_id = user_id
         self.username = username

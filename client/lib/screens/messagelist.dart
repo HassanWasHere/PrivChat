@@ -58,6 +58,7 @@ class _MessageListPageWithState extends State<MessageListPage> {
     void showConversation(BuildContext ctx, Conversation conversation){
         var conversationPage = MessagePage();
         conversationPage.setConversation(conversation);
+        conversationPage.setClient(widget.thisUser);
         TransitionHandler.Transition(ctx, conversationPage);
     }
     Widget build(BuildContext ctx){

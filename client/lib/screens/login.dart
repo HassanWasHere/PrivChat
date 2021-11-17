@@ -19,30 +19,27 @@ class LoginPage extends StatefulWidget {
 class _LoginPageWithState extends State<LoginPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
-    String Response = '';
 
     void SignupTransition(BuildContext ctx){
         TransitionHandler.Transition(ctx, SignupPage());
     }
-    void MessageListTransition(BuildContext ctx){
+    void MessageListTransition(BuildContext ctx, Client thisUser, String Response){
         MessageListPage page = MessageListPage();
         page.setResponseData(Response);
-        userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
-            page.setClientData(thisUser);
-            TransitionHandler.Transition(ctx, page);
-        });
-        
+        page.setClientData(thisUser);
+        TransitionHandler.Transition(ctx, page);
     }
 
     void ProcessLogin(BuildContext ctx){
-        messageAPI.GetConversations(usernameController.text, passwordController.text).then((erg) => 
-            setState((){
-                Response = erg.ErrorMessage;
-                if (erg.Success){
-                    MessageListTransition(ctx);
-                }
-            })
-        );
+        userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
+            messageAPI.GetConversations(thisUser).then((erg) => 
+                setState((){
+                    if (erg.Success){
+                        MessageListTransition(ctx, thisUser, erg.ErrorMessage);
+                    }
+                })
+            );
+        });
     }
 
     @override
@@ -69,9 +66,9 @@ class _LoginPageWithState extends State<LoginPage> {
                                 )
                             ),
                             SizedBox(height: 36.0),
-                            InputBox(false, "Username", usernameController).build(ctx),
-                            InputBox(true, "Password", passwordController).build(ctx),
-                            LargeButton(65.0, double.infinity, "Login", ProcessLogin).build(ctx),
+                            InputBox(70, 360, false, "Username", usernameController).build(ctx),
+                            InputBox(70, 360, true, "Password", passwordController).build(ctx),
+                            LargeButton(65.0, 360.0, "Login", ProcessLogin).build(ctx),
                             SizedBox(height: 10.0),
                             Text("Not a user yet?"),
                             LargeButton(65.0, 240.0, "Sign up", SignupTransition).build(ctx),

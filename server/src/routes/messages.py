@@ -14,7 +14,6 @@ def create_route(app):
             if password_hash.verify_user(user, auth.password):
                 if request.method == "GET":
                     conversations = dict()
-                    print(user.get_messages())
                     if user.get_messages():
                         for msg in user.get_messages():
                             if msg.sender_id == user.user_id:
@@ -29,19 +28,23 @@ def create_route(app):
                     else:
                         return {}
                 elif request.method == "POST":
-                    content = request.form.get("content")
-                    recipient_name = request.form.get("recipient")
-                    recipient = users.User.create_from_username(recipient_name)
-                    if recipient and content:
-                        try:
-                            user.send_message(recipient.user_id, content)
-                            return "success", 200
-                        except:
-                            return "an error occured", 401
+                    request_data = request.get_json()
+                    if request_data:
+                        content = request_data["content"]
+                        recipient_id = request_data["recipient_id"]
+                        recipient = users.User.create_from_id(recipient_id)
+                        if recipient:
+                            try:
+                                user.send_message(recipient.user_id, content)
+                                return "success", 200
+                            except:
+                                return "an error occured", 401
+                        else:
+                            return "no data sent", 401
                     else:
-                        return "no recipient/content", 401
+                        return "no recipient", 401
             else:
-                return "incorrect username or password", 404
+                return "incorrect username or password", 403
         else:
             return "please enter credentials", 404
 
