@@ -11,19 +11,11 @@ import 'messagelist.dart';
 import '../../widgets/input_box.dart';
 
 class MessagePage extends StatefulWidget {
+
+    Conversation currentConversation;
+    Client thisUser;
     
-    MessagePage({Key? key}) : super(key: key);
-
-    Conversation? currentConversation;
-    Client? thisUser;
-
-    void setConversation(Conversation conversation){
-        currentConversation = conversation;
-    }
-
-    void setClient(Client client){
-        thisUser = client;
-    }
+    MessagePage(@required this.thisUser, @required this.currentConversation, {Key? key}) : super(key: key);
 
     @override
     _MessagePageWithState createState() =>  _MessagePageWithState();
@@ -35,12 +27,12 @@ class _MessagePageWithState extends State<MessagePage> {
 
     void sendMessage(BuildContext ctx){
         var content = messageBoxController.text;
-        messageAPI.SendMessage(widget.thisUser as Client, (widget.currentConversation as Conversation).other_user, content).then((HttpPostResponse a){});
+        messageAPI.SendMessage(widget.thisUser as Client, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
     }
 
     @override
     Widget build(BuildContext ctx){
-        Conversation currentConversation = widget.currentConversation as Conversation;
+        Conversation currentConversation = widget.currentConversation;
         return Scaffold(
             body: Center(
                 child: Container (

@@ -8,19 +8,13 @@ import '../api/user.dart' as UserAPI;
 import 'transition.dart' as TransitionHandler;
 import 'message.dart';
 class MessageListPage extends StatefulWidget {
-    MessageListPage({Key? key}) : super(key: key);
 
-    String Response = '';
-    Client thisUser = Client("ERROR", "ERROR", -2);
+    String Response;
+    Client thisUser;
 
-    void setResponseData(String data){
-        Response = data;
-    }
+    MessageListPage(@required this.thisUser, @required this.Response, {Key? key}) : super(key: key);
 
-    void setClientData(Client client){
-        thisUser = client;
-    }
-
+    
     @override
     _MessageListPageWithState createState() =>  _MessageListPageWithState();
 }
@@ -56,9 +50,7 @@ class _MessageListPageWithState extends State<MessageListPage> {
     }
 
     void showConversation(BuildContext ctx, Conversation conversation){
-        var conversationPage = MessagePage();
-        conversationPage.setConversation(conversation);
-        conversationPage.setClient(widget.thisUser);
+        var conversationPage = MessagePage(widget.thisUser, conversation);
         TransitionHandler.Transition(ctx, conversationPage);
     }
     Widget build(BuildContext ctx){

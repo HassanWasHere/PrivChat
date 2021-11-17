@@ -24,9 +24,7 @@ class _LoginPageWithState extends State<LoginPage> {
         TransitionHandler.Transition(ctx, SignupPage());
     }
     void MessageListTransition(BuildContext ctx, Client thisUser, String Response){
-        MessageListPage page = MessageListPage();
-        page.setResponseData(Response);
-        page.setClientData(thisUser);
+        MessageListPage page = MessageListPage(thisUser, Response);
         TransitionHandler.Transition(ctx, page);
     }
 
