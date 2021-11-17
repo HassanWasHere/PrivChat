@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 class Conversation {
     User other_user;
-    List<Message> messages;
+    List<Message> messages = <Message>[];
 
     void addMessage(num message_id, String content, User sender, User recipient){
         print("ADDING MESSAGES");

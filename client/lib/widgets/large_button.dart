@@ -26,8 +26,7 @@ class LargeButton {
                             color: Colors.white,
                             fontWeight: FontWeight.bold
                         )
-                    ),
-                                            
+                    ),                      
                 ),
             )
         );

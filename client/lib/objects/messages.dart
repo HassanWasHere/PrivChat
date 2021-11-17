@@ -1,7 +1,7 @@
 import 'user.dart';
 class Message {
-    num message_id = 0;
-    String content = "";
+    num message_id;
+    String content;
     User sender;
     User recipient;
 

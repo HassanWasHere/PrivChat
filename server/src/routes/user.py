@@ -18,7 +18,7 @@ def create_route(app):
                 return "Error fetching user information", 401
         elif user_name:
             try:
-                user_info = db.execute("SELECT users.username, users.avatar_url, keys.pub_key FROM users,keys WHERE users.user_id=keys.user_id AND users.username=?", [user_name]).fetchone()
+                user_info = db.execute("SELECT users.user_id, users.avatar_url, keys.pub_key FROM users,keys WHERE users.user_id=keys.user_id AND users.username=?", [user_name]).fetchone()
                 return json.dumps(user_info)
             except:
                 return "Error fetching user information", 401

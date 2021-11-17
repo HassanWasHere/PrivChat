@@ -50,7 +50,6 @@ Future<User> createUserFromUsername(String user_name) async {
 }
 
 Future<Client> createClientFromUsernameAndPassword(String user_name, String password) async {
-    print('$API_ENDPOINT_URL/user?username=$user_name');
     final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?username=$user_name'), 
         headers: <String, String>{
             'Access-Control-Allow-Origin': '*',

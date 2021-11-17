@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../objects/user.dart';
 import '../objects/messages.dart';
 import '../objects/client.dart';
+import '../../widgets/large_button.dart';
 import '../api/user.dart' as UserAPI;
 import 'transition.dart' as TransitionHandler;
 import 'message.dart';
@@ -53,28 +54,45 @@ class _MessageListPageWithState extends State<MessageListPage> {
         var conversationPage = MessagePage(widget.thisUser, conversation);
         TransitionHandler.Transition(ctx, conversationPage);
     }
+
+    void createMessage(BuildContext ctx){
+        print("CLICKED");
+    }
     Widget build(BuildContext ctx){
-        print("BUILDING " + Conversations.length.toString());
         return Scaffold(
-            body: ListView.builder(
-                itemCount: Conversations.length,
-                itemBuilder: (context, index) {
-                    var conversation = Conversations[index];
-                    print(Conversations.length);
-                    String messageContent;
-                    if (conversation.getMessages().length == 0){
-                        messageContent = "No messages sent to this user";
-                    } else {
-                        messageContent = conversation.getMessages()[0].content;
-                    }
-                    
-                    return ListTile(
-                        title: Text(conversation.other_user.username),
-                        subtitle: Text(messageContent),
-                        onTap: (){showConversation(ctx, conversation);}
-                    );
-                },
+            body: Container(
+                padding: EdgeInsets.all(36.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                        Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(ctx).size.height * 0.75,
+                            child:ListView.builder(
+                                itemCount: Conversations.length,
+                                itemBuilder: (context, index) {
+                                    var conversation = Conversations[index];
+                                    print(Conversations.length);
+                                    String messageContent;
+                                    if (conversation.getMessages().length == 0){
+                                        messageContent = "No messages sent to this user";
+                                    } else {
+                                        messageContent = conversation.getMessages()[0].content;
+                                    }
+                                    
+                                    return ListTile(
+                                        title: Text(conversation.other_user.username),
+                                        subtitle: Text(messageContent),
+                                        onTap: (){showConversation(ctx, conversation);}
+                                    );
+                                },
+                            ),
+                        ),
+                        LargeButton(60.0, 60.0, "+", createMessage).build(ctx),
+                    ]  
+                ) 
             ),
-        ); 
+        );
     }
 }
