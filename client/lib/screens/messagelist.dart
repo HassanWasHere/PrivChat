@@ -8,6 +8,7 @@ import '../../widgets/large_button.dart';
 import '../api/user.dart' as UserAPI;
 import 'transition.dart' as TransitionHandler;
 import 'message.dart';
+import 'composemessage.dart';
 class MessageListPage extends StatefulWidget {
 
     String Response;
@@ -56,7 +57,8 @@ class _MessageListPageWithState extends State<MessageListPage> {
     }
 
     void createMessage(BuildContext ctx){
-        print("CLICKED");
+        var composePage = ComposePage(widget.thisUser);
+        TransitionHandler.Transition(ctx, composePage);
     }
     Widget build(BuildContext ctx){
         return Scaffold(

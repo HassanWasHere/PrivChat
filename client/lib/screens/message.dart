@@ -27,7 +27,7 @@ class _MessagePageWithState extends State<MessagePage> {
 
     void sendMessage(BuildContext ctx){
         var content = messageBoxController.text;
-        messageAPI.SendMessage(widget.thisUser as Client, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
+        messageAPI.SendMessage(widget.thisUser, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
     }
 
     @override
