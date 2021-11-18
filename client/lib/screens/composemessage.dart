@@ -21,25 +21,37 @@ class ComposePage extends StatefulWidget {
 
 class _ComposePageWithState extends State<ComposePage> {
     final usernameController = TextEditingController();
+    String error = "";
 
     void MessageUser(BuildContext ctx){
         String username = usernameController.text;
-        userAPI.createUserFromUsername(username).then((User other_user){
+        userAPI.createUserFromUsername(username)
+        .then((User other_user){
             Conversation newConversation = Conversation(other_user);
             var conversationPage = MessagePage(widget.thisUser, newConversation);
             TransitionHandler.Transition(ctx, conversationPage);
+        })
+        .catchError((e) {
+            setState((){
+                error = "User not found";
+            });
         });
     }
 
     @override
     Widget build(BuildContext ctx){
+        
+
         return Scaffold(
+            appBar: AppBar(
+                title: Text('Compose Message'),
+            ),
             body: Center(
                 child: Column(
                     children: <Widget>[
                         InputBox(70, 360, false, "Recipient username", usernameController).build(ctx),
-                        Text("Hello"),
-                        LargeButton(60.0, 60.0, "Message User", MessageUser).build(ctx),
+                        Text("$error"),
+                        LargeButton(60.0, 240.0, "Message User", MessageUser).build(ctx),
                     ]
                 )
             )

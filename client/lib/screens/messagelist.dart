@@ -62,6 +62,9 @@ class _MessageListPageWithState extends State<MessageListPage> {
     }
     Widget build(BuildContext ctx){
         return Scaffold(
+            appBar: AppBar(
+                title: Text('All conversations'),
+            ),
             body: Container(
                 padding: EdgeInsets.all(36.0),
                 child: Column(

@@ -55,6 +55,11 @@ Future<Client> createClientFromUsernameAndPassword(String user_name, String pass
             'Access-Control-Allow-Origin': '*',
         },
     );
-    var userData = jsonDecode(response.body);
-    return Client(user_name, password, userData[0]);
+    try{
+        var userData = jsonDecode(response.body);
+        return Client(user_name, password, userData[0]);
+    } catch(e){
+        throw Exception('User not found');
+    }
+    
 }

@@ -33,7 +33,11 @@ class _MessagePageWithState extends State<MessagePage> {
     @override
     Widget build(BuildContext ctx){
         Conversation currentConversation = widget.currentConversation;
+        String recipient_name = currentConversation.other_user.username;
         return Scaffold(
+            appBar: AppBar(
+                title: Text('Conversation with $recipient_name'),
+            ),
             body: Center(
                 child: Container (
                     padding: EdgeInsets.all(36.0),
