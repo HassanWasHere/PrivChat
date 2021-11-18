@@ -9,6 +9,7 @@ import '../../objects/conversation.dart';
 import '../../objects/httppostresponse.dart';
 import 'messagelist.dart';
 import '../../widgets/input_box.dart';
+import '../../widgets/text_bubble.dart';
 
 class MessagePage extends StatefulWidget {
 
@@ -46,24 +47,15 @@ class _MessagePageWithState extends State<MessagePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                             Container(
-                                height: 120.0,
-                                width: 240.0,
+                                height: 240.0,
+                                width: 420.0,
                                 child: ListView.builder(
                                     itemCount: currentConversation.messages.length,
                                     itemBuilder: (context, index) {
                                         var message = currentConversation.messages[index];
-                                        return SizedBox(
-                                            width: 4.0,
-                                            height: 50.0,
-                                            child: ListTile(
-                                                title: Text(message.sender.username),
-                                                subtitle: Text(message.content),
-                                                tileColor: Colors.green,
-                                                minLeadingWidth: 0.0,
-                                            )
-                                        );
+                                        return Bubble(message.sender.username, message.content, message.sender.user_id == widget.thisUser.user_id).build(ctx);
                                     }
-                                ) 
+                                ),
                             ),
                             InputBox(70, 360, false, "Send Message", messageBoxController).build(ctx),
                             LargeButton(60.0, 60.0, "->", sendMessage).build(ctx),
