@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 class Bubble {
     String name;
     String content;
-    bool isme;
 
-    Bubble(@required this.name, @required this.content, @required this.isme);
+    Bubble(@required this.name, @required this.content);
 
     @override
     Widget build(BuildContext context) {
         return Container(
-            height: 60,
+            height: 50,
             width: 150,
             padding: new EdgeInsets.all(10.0),
             child: Column(
-                crossAxisAlignment: isme ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                     Text(this.name),
                     Text(this.content)

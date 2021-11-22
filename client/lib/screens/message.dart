@@ -60,8 +60,8 @@ class _MessagePageWithState extends State<MessagePage> {
                                         var message = currentConversation.messages[index];
                                         print(message.recipient.username);
                                         return Align(
-                                            child: Bubble(message.sender.username, message.content, message.sender.user_id == widget.thisUser.user_id).build(ctx),
-                                            alignment: Alignment.centerLeft,
+                                            child: Bubble(message.sender.username, message.content).build(ctx),
+                                            alignment: message.sender.user_id == widget.thisUser.user_id ? Alignment.topRight : Alignment.topLeft,
                                         );
                                     }
                                 ),
