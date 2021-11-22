@@ -8,7 +8,7 @@ class Bubble {
     @override
     Widget build(BuildContext context) {
         return Container(
-            height: 50,
+            height: 100,
             width: 150,
             padding: new EdgeInsets.all(10.0),
             child: Column(
