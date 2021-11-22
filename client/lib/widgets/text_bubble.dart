@@ -9,8 +9,9 @@ class Bubble {
     @override
     Widget build(BuildContext context) {
         return Container(
-            height: 50,
-            width: 10,//MediaQuery.of(context).size.width * .3,
+            height: 60,
+            width: 150,
+            padding: new EdgeInsets.all(10.0),
             child: Column(
                 crossAxisAlignment: isme ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                 children: <Widget>[
@@ -26,8 +27,8 @@ class Bubble {
                         color: Colors.black.withOpacity(.12)
                     )
                 ],
-                color: Colors.green,//this.isme ? Colors.white : Colors.greenAccent.shade100,
-                //borderRadius: BorderRadius.all(5.0),
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(20.0),
             ),
         );
     }

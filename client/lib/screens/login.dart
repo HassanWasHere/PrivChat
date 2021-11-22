@@ -33,6 +33,7 @@ class _LoginPageWithState extends State<LoginPage> {
             messageAPI.GetConversations(thisUser).then((erg) => 
                 setState((){
                     if (erg.Success){
+                        print(erg.ErrorMessage);
                         MessageListTransition(ctx, thisUser, erg.ErrorMessage);
                     }
                 })

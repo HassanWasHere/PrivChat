@@ -37,7 +37,11 @@ class _MessagePageWithState extends State<MessagePage> {
         String recipient_name = currentConversation.other_user.username;
         return Scaffold(
             appBar: AppBar(
-                title: Text('Conversation with $recipient_name'),
+                title: Row(
+                    children: <Widget>[
+                        Text('Conversation with $recipient_name'),
+                    ]
+                )
             ),
             body: Center(
                 child: Container (
@@ -48,12 +52,17 @@ class _MessagePageWithState extends State<MessagePage> {
                         children: <Widget>[
                             Container(
                                 height: 240.0,
-                                width: 420.0,
+                                width: double.infinity,
+                                padding: EdgeInsets.all(36.0),
                                 child: ListView.builder(
                                     itemCount: currentConversation.messages.length,
                                     itemBuilder: (context, index) {
                                         var message = currentConversation.messages[index];
-                                        return Bubble(message.sender.username, message.content, message.sender.user_id == widget.thisUser.user_id).build(ctx);
+                                        print(message.recipient.username);
+                                        return Align(
+                                            child: Bubble(message.sender.username, message.content, message.sender.user_id == widget.thisUser.user_id).build(ctx),
+                                            alignment: Alignment.centerLeft,
+                                        );
                                     }
                                 ),
                             ),

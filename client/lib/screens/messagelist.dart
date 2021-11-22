@@ -27,12 +27,15 @@ class _MessageListPageWithState extends State<MessageListPage> {
     String test = '';
     void loadConversations(){
         var conversationsJSON = jsonDecode(widget.Response);
+        print(conversationsJSON.toString());
         conversationsJSON.forEach((other_user_id, message_list){
             UserAPI.createUserFromID(int.parse(other_user_id)).then((otherUser){
                 var newConversation = Conversation(otherUser);
                 message_list.forEach((message){
                     User sender;
                     User recipient;
+                    print("OTHER USER: $other_user_id");
+                    print("SENDER: $message['sender_id']");
                     if (other_user_id == message['sender_id']){
                         sender = otherUser;
                         recipient = widget.thisUser;
@@ -78,7 +81,6 @@ class _MessageListPageWithState extends State<MessageListPage> {
                                 itemCount: Conversations.length,
                                 itemBuilder: (context, index) {
                                     var conversation = Conversations[index];
-                                    print(Conversations.length);
                                     String messageContent;
                                     if (conversation.getMessages().length == 0){
                                         messageContent = "No messages sent to this user";
