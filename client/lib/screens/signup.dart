@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import '../../api/user.dart' as userAPI;
-import '../../handlers/encrypt.dart';
+import '../../handlers/encrypt.dart' as encrypt;
 import 'transition.dart' as TransitionHandler;
 import 'login.dart';
 class SignupPage extends StatefulWidget {
@@ -18,9 +18,13 @@ class _SignupPageWithState extends State<SignupPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
-    EncryptionHandler encrypt = EncryptionHandler();
+    //final EncryptionHandler = EncryptionHandler();
     void SignupRequest2(BuildContext ctx){
-        encrypt.GeneratePubPrivKeyPair().then((list) => setState(()=> errorMessage=list[1].length.toString()));
+        encrypt.AESEncrypt("hello").then((encryptedmessage){
+            encrypt.AESDecrypt(encryptedmessage).then( (decryptedmessage){
+                setState( () => errorMessage = decryptedmessage);
+            });
+        });
     }
 
     void SignupRequest(BuildContext ctx){
@@ -70,7 +74,7 @@ class _SignupPageWithState extends State<SignupPage> {
                             SizedBox(height: 15.0),
                             Text("By signing up for this service, you agree to the Terms and Conditions"),
                             SizedBox(height: 15.0),
-                            LargeButton(65.0, double.infinity, "Sign up", SignupRequest).build(ctx),
+                            LargeButton(65.0, double.infinity, "Sign up", SignupRequest2).build(ctx),
                             SizedBox(height: 10.0),
                             Text("Already a user?"),
                             LargeButton(65.0, 240.0, "Login", LoginTransition).build(ctx),

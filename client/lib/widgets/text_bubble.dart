@@ -8,14 +8,20 @@ class Bubble {
     @override
     Widget build(BuildContext context) {
         return Container(
-            height: 100,
-            width: 150,
+            height: MediaQuery.of(context).size.height * .1,
+            width: MediaQuery.of(context).size.width * .25,
             padding: new EdgeInsets.all(10.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                    Text(this.name),
-                    Text(this.content)
+                    //Expanded(
+                    //    flex: 3,
+                    //    child: Text(this.name)
+                    //),
+                    Expanded(
+                        flex: 10,
+                        child: Text(this.content)
+                    )
                 ]
             ),
             decoration: BoxDecoration(
@@ -26,7 +32,7 @@ class Bubble {
                         color: Colors.black.withOpacity(.12)
                     )
                 ],
-                color: Colors.green,
+                color: Colors.grey,
                 borderRadius: BorderRadius.circular(20.0),
             ),
         );

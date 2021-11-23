@@ -50,24 +50,37 @@ class _MessagePageWithState extends State<MessagePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                            Container(
-                                height: 240.0,
-                                width: double.infinity,
-                                padding: EdgeInsets.all(36.0),
-                                child: ListView.builder(
-                                    itemCount: currentConversation.messages.length,
-                                    itemBuilder: (context, index) {
-                                        var message = currentConversation.messages[index];
-                                        print(message.recipient.username);
-                                        return Align(
-                                            child: Bubble(message.sender.username, message.content).build(ctx),
-                                            alignment: message.sender.user_id == widget.thisUser.user_id ? Alignment.topRight : Alignment.topLeft,
-                                        );
-                                    }
+                            Expanded(
+                                flex: 8,
+                                child: Container(
+                                    height: 240.0,
+                                    width: double.infinity,
+                                    padding: EdgeInsets.all(36.0),
+                                    child: ListView.builder(
+                                        itemCount: currentConversation.messages.length,
+                                        reverse: true,
+                                        itemBuilder: (context, index) {
+                                            var message = currentConversation.messages[index];
+                                            print(message.recipient.username);
+                                            return Padding(
+                                                padding: EdgeInsets.all(8),
+                                                child: Align(
+                                                    child: Bubble(message.sender.username, message.content).build(ctx),
+                                                    alignment: message.sender.user_id == widget.thisUser.user_id ? Alignment.topRight : Alignment.topLeft,
+                                                )
+                                            );
+                                        }
+                                    ),
                                 ),
                             ),
-                            InputBox(70, 360, false, "Send Message", messageBoxController).build(ctx),
-                            LargeButton(60.0, 60.0, "->", sendMessage).build(ctx),
+                            Expanded(
+                                flex: 1,
+                                child: InputBox(70, 360, false, "Send Message", messageBoxController).build(ctx),
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: LargeButton(60.0, 60.0, "->", sendMessage).build(ctx),
+                            )
                         ]
                     )
                 )

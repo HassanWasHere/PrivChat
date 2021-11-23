@@ -1,1 +1,1 @@
-flutter pub get && flutter run --dart-define=GITPOD_WORKSPACE_URL=http://localhost:8080 -d web-server
+flutter pub get && flutter run --dart-define=GITPOD_WORKSPACE_URL=http://localhost:8080 --dart-define=SECRET_KEY="helloworldhelloworldhelloworldaa" -d web-server
