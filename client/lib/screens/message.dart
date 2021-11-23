@@ -55,7 +55,7 @@ class _MessagePageWithState extends State<MessagePage> {
                                 child: Container(
                                     height: 240.0,
                                     width: double.infinity,
-                                    padding: EdgeInsets.all(36.0),
+                                    //padding: EdgeInsets.all(18.0),
                                     child: ListView.builder(
                                         itemCount: currentConversation.messages.length,
                                         reverse: true,
@@ -63,7 +63,7 @@ class _MessagePageWithState extends State<MessagePage> {
                                             var message = currentConversation.messages[index];
                                             print(message.recipient.username);
                                             return Padding(
-                                                padding: EdgeInsets.all(8),
+                                                padding: EdgeInsets.only(bottom: 8),
                                                 child: Align(
                                                     child: Bubble(message.sender.username, message.content).build(ctx),
                                                     alignment: message.sender.user_id == widget.thisUser.user_id ? Alignment.topRight : Alignment.topLeft,

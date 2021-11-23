@@ -9,20 +9,16 @@ class Bubble {
     Widget build(BuildContext context) {
         return Container(
             height: MediaQuery.of(context).size.height * .1,
-            width: MediaQuery.of(context).size.width * .25,
-            padding: new EdgeInsets.all(10.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                    //Expanded(
-                    //    flex: 3,
-                    //    child: Text(this.name)
-                    //),
-                    Expanded(
-                        flex: 10,
-                        child: Text(this.content)
+            width: MediaQuery.of(context).size.width * .3,
+            child: Align(
+                alignment: Alignment.center,
+                child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                        this.content,
+                        style: TextStyle(fontSize: 14),
                     )
-                ]
+                )
             ),
             decoration: BoxDecoration(
                 boxShadow: [
@@ -33,7 +29,7 @@ class Bubble {
                     )
                 ],
                 color: Colors.grey,
-                borderRadius: BorderRadius.circular(20.0),
+                borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * .25),
             ),
         );
     }
