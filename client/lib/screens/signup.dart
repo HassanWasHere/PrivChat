@@ -19,17 +19,22 @@ class _SignupPageWithState extends State<SignupPage> {
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
     //final EncryptionHandler = EncryptionHandler();
-    void SignupRequest2(BuildContext ctx){
-        encrypt.AESEncrypt("hello").then((encryptedmessage){
-            encrypt.AESDecrypt(encryptedmessage).then( (decryptedmessage){
-                setState( () => errorMessage = decryptedmessage);
-            });
-        });
-    }
 
     void SignupRequest(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
-            userAPI.Signup(usernameController.text, passwordController.text, "fornow").then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
+            userAPI.isUsernameAvailable(usernameController.text).then((available){
+                if (available){ 
+                    storage.getKey(usernameController.text)
+                    .catchError((e) {
+                        userAPI.Signup(usernameController.text, passwordController.text, "fornow").then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
+                    }
+                    .then((key){
+                        userAPI.Signup(usernameController.text, passwordController.text, key).then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
+                    })
+                } else {
+                    setState(() => errorMessage = "not available 1");
+                }
+            });
         } else {
             setState(() => errorMessage = "not matching");
         }
@@ -74,7 +79,7 @@ class _SignupPageWithState extends State<SignupPage> {
                             SizedBox(height: 15.0),
                             Text("By signing up for this service, you agree to the Terms and Conditions"),
                             SizedBox(height: 15.0),
-                            LargeButton(65.0, double.infinity, "Sign up", SignupRequest2).build(ctx),
+                            LargeButton(65.0, 360.0, "Sign up", SignupRequest).build(ctx),
                             SizedBox(height: 10.0),
                             Text("Already a user?"),
                             LargeButton(65.0, 240.0, "Login", LoginTransition).build(ctx),

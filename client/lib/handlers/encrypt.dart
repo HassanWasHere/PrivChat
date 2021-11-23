@@ -20,7 +20,7 @@ import 'package:cryptography/cryptography.dart';
 
 
 
-    Future<List<int>> AESEncrypt(String message) async {
+    Future<String> AESEncrypt(String message) async {
         final algorithm = AesCbc.with128bits(
             macAlgorithm: Hmac.sha256(),
         );
@@ -30,7 +30,7 @@ import 'package:cryptography/cryptography.dart';
             message_in_bytes,
             secretKey: SecretKey(key_in_bytes)
         );
-        return secretBox.concatenation();
+        return utf8.decode(secretBox.concatenation());
     }
 
     Future<String> AESDecrypt(List<int> message) async {
