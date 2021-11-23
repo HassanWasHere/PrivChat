@@ -23,10 +23,10 @@ class EncryptionHandler {
             macAlgorithm: Hmac.sha256(),
         );
         List<int> message_in_bytes = utf8.encode(message);
-        final secretKey = await algorithm.newSecretKey();
+        List<int> key_in_bytes = utf8.encode(config.SECRET_KEY);
         final secretBox = await algorithm.encrypt(
             message_in_bytes,
-            secretKey: secretKey,
+            secretKey: SecretKey(key_in_bytes)
         );
         return secretBox.cipherText;
     }
