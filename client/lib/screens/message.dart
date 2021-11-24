@@ -29,12 +29,22 @@ class _MessagePageWithState extends State<MessagePage> {
     void sendMessage(BuildContext ctx){
         var content = messageBoxController.text;
         messageAPI.SendMessage(widget.thisUser, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
+        setState((){
+            widget.currentConversation.addMessage(-1, content, widget.thisUser, widget.currentConversation.other_user);
+        });
+        
     }
 
     @override
     Widget build(BuildContext ctx){
         Conversation currentConversation = widget.currentConversation;
         String recipient_name = currentConversation.other_user.username;
+        double width;
+        if (MediaQuery.of(ctx).size.width > 420){
+            width = 420;
+        } else {
+            width = MediaQuery.of(ctx).size.width;
+        }
         return Scaffold(
             appBar: AppBar(
                 title: Row(
@@ -54,7 +64,7 @@ class _MessagePageWithState extends State<MessagePage> {
                                 flex: 8,
                                 child: Container(
                                     height: 240.0,
-                                    width: double.infinity,
+                                    width: width,
                                     //padding: EdgeInsets.all(18.0),
                                     child: ListView.builder(
                                         itemCount: currentConversation.messages.length,

@@ -10,13 +10,12 @@ import '../../objects/user.dart';
 import '../../objects/httppostresponse.dart';
 import '../../handlers/encrypt.dart' as encrypt;
 import '../objects/client.dart';
-
-const String API_ENDPOINT_URL = String.fromEnvironment("GITPOD_WORKSPACE_URL");
+import '../../handlers/config.dart';
 
 Future<HttpPostResponse> GetConversations(Client user) async {
     var username = user.username;
     var password = user.password;
-    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/messages'), 
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/messages'), 
         headers: <String, String>{
             'Access-Control-Allow-Origin': '*',
             HttpHeaders.authorizationHeader: 'Basic '+ encrypt.ToBase64("$username:$password"),
@@ -28,7 +27,7 @@ Future<HttpPostResponse> GetConversations(Client user) async {
 Future<HttpPostResponse> SendMessage(Client user, User recipient, String content) async {
     var username = user.username;
     var password = user.password;
-    final response = await http.post(Uri.parse('$API_ENDPOINT_URL/messages'), 
+    final response = await http.post(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/messages'), 
         headers: <String, String>{
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
