@@ -2,20 +2,23 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'encrypt.dart' as encrypt;
 
-class StorageHandler {
-    Future<dynamic> getKey async (String username){
+//class StorageHandler {
+    Future<String> getKey  (String username) async { 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? key = prefs.getString("KEY_$username");
         if (key != null){
-            return encrypt.AESDecrypt(key);
+            return await encrypt.AESDecrypt(key as String);
         } else {
-            return false;
+            throw Exception("No key");
         }
+        
     }
 
-    Future<void> setKey async (String username, String key){
+    Future<bool> setKey (String username, String key) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString("KEY_$username", encrypt.AESEncrypt(key));
+        bool Response = await prefs.setString("KEY_$username", await encrypt.AESEncrypt(key));
+        print("STORED: " + (await prefs.getString("KEY_$username") as String));
+        return true;
     }
 
-}
+//}

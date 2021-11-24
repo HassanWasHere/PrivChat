@@ -3,6 +3,7 @@ import '../../widgets/input_box.dart';
 import '../../widgets/large_button.dart';
 import '../../api/user.dart' as userAPI;
 import '../../handlers/encrypt.dart' as encrypt;
+import '../../handlers/storage.dart' as storage;
 import 'transition.dart' as TransitionHandler;
 import 'login.dart';
 class SignupPage extends StatefulWidget {
@@ -25,18 +26,49 @@ class _SignupPageWithState extends State<SignupPage> {
             userAPI.isUsernameAvailable(usernameController.text).then((available){
                 if (available){ 
                     storage.getKey(usernameController.text)
-                    .catchError((e) {
-                        userAPI.Signup(usernameController.text, passwordController.text, "fornow").then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
-                    }
-                    .then((key){
-                        userAPI.Signup(usernameController.text, passwordController.text, key).then((erg) => setState(()=> errorMessage = erg.ErrorMessage));
-                    })
+                        .catchError((e) {
+                            encrypt.GeneratePubPrivKeyPair().then((asd){
+                                String privateKey = asd[0];
+                                String publicKey = asd[1];
+                                storage.setKey(usernameController.text, privateKey)
+                                    .catchError((e){
+                                        setState((){
+                                            errorMessage = e.toString();
+                                        });
+                                    })
+                                    .then((success){
+                                        if (success){
+                                            userAPI.Signup(usernameController.text, passwordController.text, publicKey)
+                                            .then((erg){
+                                                setState((){ 
+                                                    errorMessage = erg.ErrorMessage;
+                                                });
+                                            });
+                                        } else {
+                                            errorMessage = "An error occurred2";
+                                        }
+                                        
+                                    });
+                            });
+                        })
+                        .then((key){
+                            userAPI.Signup(usernameController.text, passwordController.text, key)
+                                .then((erg){
+                                    setState((){
+                                        errorMessage = erg.ErrorMessage;
+                                    });
+                                });
+                        });
                 } else {
-                    setState(() => errorMessage = "not available 1");
+                    setState((){
+                        errorMessage = "not available 1";
+                    });
                 }
             });
         } else {
-            setState(() => errorMessage = "not matching");
+            setState((){
+                errorMessage = "not matching";
+            });
         }
     }
 

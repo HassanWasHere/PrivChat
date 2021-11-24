@@ -30,17 +30,17 @@ import 'package:cryptography/cryptography.dart';
             message_in_bytes,
             secretKey: SecretKey(key_in_bytes)
         );
-        return utf8.decode(secretBox.concatenation());
+        return base64Encode(secretBox.concatenation());
     }
 
-    Future<String> AESDecrypt(List<int> message) async {
+    Future<String> AESDecrypt(String message) async {
         final algorithm = AesCbc.with128bits(
             macAlgorithm: Hmac.sha256(),
         );
         List<int> key_in_bytes = utf8.encode(config.SECRET_KEY);
-
+        List<int> message_in_bytes = base64Decode(message);
         SecretBox secretBox = SecretBox.fromConcatenation(
-            message,
+            message_in_bytes,
             nonceLength: 16, 
             macLength: 32,
         );

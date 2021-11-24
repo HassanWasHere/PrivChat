@@ -1,0 +1,3 @@
+class WebSocket {
+    User Recipient;
+}
