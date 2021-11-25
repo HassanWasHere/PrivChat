@@ -1,18 +1,17 @@
 import flask
-import socketio
-from flask_cors import CORS
-from src.routes import signup, messages, user
+from flask_socketio import SocketIO, emit
+from src.routes import signup, messages, user, sockets
 
 app = flask.Flask(__name__)
 app.debug = True
-CORS(app)
-
-sio = socketio.AsyncServer()
-app = socketio.WSGIApp(sio, app)
 
 signup.create_route(app)
 messages.create_route(app)
 user.create_route(app)
 
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+sockets.create_socket_routes(socketio)
+
 def start_listening():
-    app.run(host="localhost", port=8080)
+    socketio.run(app, host="localhost", port=8080)

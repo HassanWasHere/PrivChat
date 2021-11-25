@@ -4,7 +4,10 @@ class WebSocket {
     websocket.Socket? sock;
     WebSocket(){
         try {
-            this.sock = websocket.io("$API_ENDPOINT_URL:$WEBSOCKET_PORT");
+            this.sock = websocket.io("$API_ENDPOINT_URL:$WEBSOCKET_PORT", websocket.OptionBuilder()
+                .setTransports(['websocket']) // for Flutter or Dart VM
+                .build()
+            );
             this.sock?.onConnect((_){
                 print("WEBSOCKET CONNECTION ESTABLISED");
             });
