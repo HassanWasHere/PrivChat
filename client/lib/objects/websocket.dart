@@ -1,12 +1,14 @@
-import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as websocket;
 import '../handlers/config.dart';
 class WebSocket {
-    Socket socket;
+    websocket.Socket sock;
     WebSocket(){
-        this.socket = io("$API_ENDPOINT_URL:$WEBSOCKET_PORT");
-
+        this.sock = websocket.io("$API_ENDPOINT_URL:$WEBSOCKET_PORT");
+        this.sock.onConnect((_){
+            print("WEBSOCKET CONNECTION ESTABLISED");
+        })
     }
 
-    Future<void> sendMessage()
+    Future<void> sendMessage(){};
 
 }

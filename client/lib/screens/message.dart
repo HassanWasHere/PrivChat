@@ -40,8 +40,8 @@ class _MessagePageWithState extends State<MessagePage> {
         Conversation currentConversation = widget.currentConversation;
         String recipient_name = currentConversation.other_user.username;
         double width;
-        if (MediaQuery.of(ctx).size.width > 420){
-            width = 420;
+        if (MediaQuery.of(ctx).size.width > 560){
+            width = 560;
         } else {
             width = MediaQuery.of(ctx).size.width;
         }
@@ -70,7 +70,7 @@ class _MessagePageWithState extends State<MessagePage> {
                                         itemCount: currentConversation.messages.length,
                                         reverse: true,
                                         itemBuilder: (context, index) {
-                                            var message = currentConversation.messages[index];
+                                            var message = currentConversation.messages[currentConversation.messages.length-1-index];
                                             print(message.recipient.username);
                                             return Padding(
                                                 padding: EdgeInsets.only(bottom: 8),

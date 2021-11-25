@@ -31,6 +31,7 @@ dependencies:
   fast_rsa: ^3.0.3
   shared_preferences: ^2.0.8
   cryptography: 2.0.5
+  socket_io_client: 1.0.2
   flutter:
     sdk: flutter
 

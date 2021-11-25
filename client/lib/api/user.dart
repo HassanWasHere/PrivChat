@@ -10,7 +10,7 @@ import '../../objects/user.dart';
 import '../../objects/client.dart';
 import '../../objects/httppostresponse.dart';
 import '../../handlers/encrypt.dart';
-import '../../handlers/config.dart'
+import '../../handlers/config.dart';
 
 Future<HttpPostResponse> Signup(String username, String password, String pubkey) async {
     final response = await http.post(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/signup'), 
