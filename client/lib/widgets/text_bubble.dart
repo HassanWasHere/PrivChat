@@ -12,7 +12,7 @@ class Bubble {
             width = 250;
         }
         return Container(
-            height: MediaQuery.of(context).size.height * .1,
+            height: MediaQuery.of(context).size.height * .075,
             width: width,
             child: Align(
                 alignment: Alignment.center,
