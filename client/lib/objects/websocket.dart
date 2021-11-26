@@ -12,7 +12,10 @@ class WebSocket {
                 .build()
             );
             this.sock?.onConnect((_){
-                this.sock?.emit("auth", this.thisUser?.username);
+                this.sock?.emit("conversations", [this.thisUser?.username, this.thisUser?.password]);
+            });
+            this.sock?.on("conversation", (data){
+                print("WEBSOCK" + data.toString());
             });
         } catch (e){
             print(e);
