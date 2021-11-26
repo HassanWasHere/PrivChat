@@ -1,15 +1,18 @@
 import 'package:socket_io_client/socket_io_client.dart' as websocket;
 import '../handlers/config.dart';
+import '../objects/client.dart';
 class WebSocket {
     websocket.Socket? sock;
-    WebSocket(){
+    Client? thisUser;
+    WebSocket(Client thisUser){
+        this.thisUser = thisUser;
         try {
-            this.sock = websocket.io("$API_ENDPOINT_URL:$WEBSOCKET_PORT", websocket.OptionBuilder()
-                .setTransports(['websocket']) // for Flutter or Dart VM
+            this.sock = websocket.io("$API_ENDPOINT_URL", websocket.OptionBuilder()
+                .setTransports(['websocket'])
                 .build()
             );
             this.sock?.onConnect((_){
-                print("WEBSOCKET CONNECTION ESTABLISED");
+                this.sock?.emit("auth", this.thisUser?.username);
             });
         } catch (e){
             print(e);

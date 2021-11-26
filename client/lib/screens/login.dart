@@ -32,8 +32,9 @@ class _LoginPageWithState extends State<LoginPage> {
     }
 
     void ProcessLogin(BuildContext ctx){
-        WebSocket();
+        
         userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
+            WebSocket(thisUser);
             messageAPI.GetConversations(thisUser).then((erg) => 
                 setState((){
                     if (erg.Success){

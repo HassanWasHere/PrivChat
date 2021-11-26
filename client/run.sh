@@ -1,1 +1,1 @@
-flutter pub get && flutter run --dart-define=GITPOD_WORKSPACE_URL=$(gp url 8080) --dart-define=SECRET_KEY="HELLO" -d web-server 
+flutter pub get && flutter run --dart-define=API_ENDPOINT_URL=$(gp url 8080) --dart-define=SECRET_KEY="HELLO" -d web-server 

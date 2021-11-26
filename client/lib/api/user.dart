@@ -13,7 +13,7 @@ import '../../handlers/encrypt.dart';
 import '../../handlers/config.dart';
 
 Future<HttpPostResponse> Signup(String username, String password, String pubkey) async {
-    final response = await http.post(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/signup'), 
+    final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 
         headers: <String, String>{
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
@@ -28,7 +28,7 @@ Future<HttpPostResponse> Signup(String username, String password, String pubkey)
 }
 
 Future<bool> isUsernameAvailable(String username) async {
-    final response = await http.get(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/user?username=$username'), 
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?username=$username'), 
         headers: <String, String>{
             'Access-Control-Allow-Origin': '*',
         },
@@ -37,7 +37,7 @@ Future<bool> isUsernameAvailable(String username) async {
 }
 
 Future<User> createUserFromID(num user_id) async {
-    final response = await http.get(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/user?id=$user_id'), 
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?id=$user_id'), 
         headers: <String, String>{
             'Access-Control-Allow-Origin': '*',
         },
@@ -47,7 +47,7 @@ Future<User> createUserFromID(num user_id) async {
 }
 
 Future<User> createUserFromUsername(String user_name) async {
-    final response = await http.get(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/user?username=$user_name'), 
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?username=$user_name'), 
         headers: <String, String>{
             'Access-Control-Allow-Origin': '*',
         },
@@ -57,7 +57,7 @@ Future<User> createUserFromUsername(String user_name) async {
 }
 
 Future<Client> createClientFromUsernameAndPassword(String user_name, String password) async {
-    final response = await http.get(Uri.parse('$API_ENDPOINT_URL:$REST_PORT/user?username=$user_name'), 
+    final response = await http.get(Uri.parse('$API_ENDPOINT_URL/user?username=$user_name'), 
         headers: <String, String>{
             'Access-Control-Allow-Origin': '*',
         },
