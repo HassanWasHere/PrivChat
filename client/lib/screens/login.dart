@@ -31,18 +31,24 @@ class _LoginPageWithState extends State<LoginPage> {
         TransitionHandler.Transition(ctx, page);
     }
 
+    void a(String data){
+        print("websocket worked");
+    }
+
     void ProcessLogin(BuildContext ctx){
         
         userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
-            WebSocket(thisUser);
-            messageAPI.GetConversations(thisUser).then((erg) => 
+            WebSocket(thisUser, (String data){
+                MessageListTransition(ctx, thisUser, data);
+            });
+            /* messageAPI.GetConversations(thisUser).then((erg) => 
                 setState((){
                     if (erg.Success){
                         print(erg.ErrorMessage);
                         MessageListTransition(ctx, thisUser, erg.ErrorMessage);
                     }
                 })
-            );
+            ); */
         });
     }
 

@@ -4,8 +4,10 @@ import '../objects/client.dart';
 class WebSocket {
     websocket.Socket? sock;
     Client? thisUser;
-    WebSocket(Client thisUser){
+    Function(String)? updateMessageCallback;
+    WebSocket(Client thisUser, Function(String) callback){
         this.thisUser = thisUser;
+        this.updateMessageCallback = callback;
         try {
             this.sock = websocket.io("$API_ENDPOINT_URL", websocket.OptionBuilder()
                 .setTransports(['websocket'])
@@ -15,7 +17,7 @@ class WebSocket {
                 this.sock?.emit("conversations", [this.thisUser?.username, this.thisUser?.password]);
             });
             this.sock?.on("conversation", (data){
-                print("WEBSOCK" + data.toString());
+                this.updateMessageCallback?.call(data.toString());
             });
         } catch (e){
             print(e);
