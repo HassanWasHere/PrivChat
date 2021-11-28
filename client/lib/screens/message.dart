@@ -31,7 +31,7 @@ class _MessagePageWithState extends State<MessagePage> {
     void initaliseSocket(){
         widget.socket.sock?.on("message", (content){
             
-        })
+        });
     }
 
     void sendMessage(BuildContext ctx){
