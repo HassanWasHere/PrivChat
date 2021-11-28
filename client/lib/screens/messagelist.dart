@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../objects/user.dart';
 import '../objects/messages.dart';
 import '../objects/client.dart';
+import '../objects/websocket.dart';
 import '../../widgets/large_button.dart';
 import '../api/user.dart' as UserAPI;
 import 'transition.dart' as TransitionHandler;
@@ -12,9 +13,10 @@ import 'composemessage.dart';
 class MessageListPage extends StatefulWidget {
 
     String Response;
+    WebSocket socket;
     Client thisUser;
 
-    MessageListPage(@required this.thisUser, @required this.Response, {Key? key}) : super(key: key);
+    MessageListPage(@required this.thisUser, @required this.Response, @required this.socket, {Key? key}) : super(key: key);
 
     
     @override
@@ -25,8 +27,9 @@ class MessageListPage extends StatefulWidget {
 class _MessageListPageWithState extends State<MessageListPage> {
     var Conversations = <Conversation>[];
     String test = '';
-    void loadConversations(){
-        var conversationsJSON = jsonDecode(widget.Response);
+    void loadConversations(String data, _){
+        Conversations = <Conversation>[];
+        var conversationsJSON = jsonDecode(data);
         print(conversationsJSON.toString());
         conversationsJSON.forEach((other_user_id, message_list){
             UserAPI.createUserFromID(int.parse(other_user_id)).then((otherUser){
@@ -51,16 +54,17 @@ class _MessageListPageWithState extends State<MessageListPage> {
     }
     void initState(){
         super.initState();
-        loadConversations();
+        loadConversations(widget.Response, null);
+        widget.socket.updateMessageCallback = loadConversations;
     }
 
     void showConversation(BuildContext ctx, Conversation conversation){
-        var conversationPage = MessagePage(widget.thisUser, conversation);
+        var conversationPage = MessagePage(widget.thisUser, conversation, widget.socket);
         TransitionHandler.Transition(ctx, conversationPage);
     }
 
     void createMessage(BuildContext ctx){
-        var composePage = ComposePage(widget.thisUser);
+        var composePage = ComposePage(widget.thisUser, widget.socket);
         TransitionHandler.Transition(ctx, composePage);
     }
     Widget build(BuildContext ctx){

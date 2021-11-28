@@ -6,6 +6,7 @@ import '../../api/user.dart' as userAPI;
 import '../../api/message.dart' as messageAPI;
 import '../../objects/client.dart';
 import '../../objects/conversation.dart';
+import '../../objects/websocket.dart';
 import '../../objects/httppostresponse.dart';
 import 'messagelist.dart';
 import '../../widgets/input_box.dart';
@@ -15,8 +16,9 @@ class MessagePage extends StatefulWidget {
 
     Conversation currentConversation;
     Client thisUser;
+    WebSocket socket;
     
-    MessagePage(@required this.thisUser, @required this.currentConversation, {Key? key}) : super(key: key);
+    MessagePage(@required this.thisUser, @required this.currentConversation, @required this.socket, {Key? key}) : super(key: key);
 
     @override
     _MessagePageWithState createState() =>  _MessagePageWithState();
@@ -26,12 +28,19 @@ class MessagePage extends StatefulWidget {
 class _MessagePageWithState extends State<MessagePage> {
     final messageBoxController = TextEditingController();
 
+    void initaliseSocket(){
+        widget.socket.sock?.on("message", (content){
+            
+        })
+    }
+
     void sendMessage(BuildContext ctx){
         var content = messageBoxController.text;
-        messageAPI.SendMessage(widget.thisUser, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
-        setState((){
+        widget.socket.sock?.emit("message", [widget.thisUser.username, widget.thisUser.password, widget.currentConversation.other_user.user_id, content]);
+        //messageAPI.SendMessage(widget.thisUser, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
+        /* setState((){
             widget.currentConversation.addMessage(-1, content, widget.thisUser, widget.currentConversation.other_user);
-        });
+        }); */
         
     }
 

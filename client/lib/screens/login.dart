@@ -26,29 +26,17 @@ class _LoginPageWithState extends State<LoginPage> {
     void SignupTransition(BuildContext ctx){
         TransitionHandler.Transition(ctx, SignupPage());
     }
-    void MessageListTransition(BuildContext ctx, Client thisUser, String Response){
-        MessageListPage page = MessageListPage(thisUser, Response);
+    void MessageListTransition(BuildContext ctx, Client thisUser, String Response, WebSocket socket){
+        MessageListPage page = MessageListPage(thisUser, Response, socket);
         TransitionHandler.Transition(ctx, page);
-    }
-
-    void a(String data){
-        print("websocket worked");
     }
 
     void ProcessLogin(BuildContext ctx){
         
         userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
-            WebSocket(thisUser, (String data){
-                MessageListTransition(ctx, thisUser, data);
+            WebSocket(thisUser, (String data, WebSocket self){
+                MessageListTransition(ctx, thisUser, data, self);
             });
-            /* messageAPI.GetConversations(thisUser).then((erg) => 
-                setState((){
-                    if (erg.Success){
-                        print(erg.ErrorMessage);
-                        MessageListTransition(ctx, thisUser, erg.ErrorMessage);
-                    }
-                })
-            ); */
         });
     }
 
