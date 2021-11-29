@@ -17,7 +17,6 @@ class WebSocket {
                 this.sock?.emit("auth", [this.thisUser?.username, this.thisUser?.password]);
             });
             this.sock?.on("conversation", (data){
-                print("CONVO UPDATE CALLED!");
                 this.updateMessageCallback?.call(data.toString(), this);
             });
         } catch (e){

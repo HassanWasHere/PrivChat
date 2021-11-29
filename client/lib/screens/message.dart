@@ -22,6 +22,8 @@ class MessagePage extends StatefulWidget {
 
     @override
     _MessagePageWithState createState() =>  _MessagePageWithState();
+
+    
 }
 
 
@@ -29,19 +31,27 @@ class _MessagePageWithState extends State<MessagePage> {
     final messageBoxController = TextEditingController();
 
     void initaliseSocket(){
-        widget.socket.sock?.on("message", (content){
-            
+        widget.socket.sock?.on("message", (data){
+            if (data[0] == widget.currentConversation.other_user.user_id){
+                setState( (){
+                    widget.currentConversation.addMessage(-1, data[1], widget.thisUser, widget.currentConversation.other_user);
+                });
+            }
         });
     }
 
     void sendMessage(BuildContext ctx){
         var content = messageBoxController.text;
-        widget.socket.sock?.emit("message", [widget.thisUser.username, widget.thisUser.password, widget.currentConversation.other_user.user_id, content]);
+        widget.socket.sock?.emit("message", [widget.currentConversation.other_user.user_id, content]);
         //messageAPI.SendMessage(widget.thisUser, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
-        /* setState((){
+        setState((){
             widget.currentConversation.addMessage(-1, content, widget.thisUser, widget.currentConversation.other_user);
-        }); */
+        });
         
+    }
+
+    void initState(){
+        this.initaliseSocket();
     }
 
     @override

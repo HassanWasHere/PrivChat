@@ -81,7 +81,7 @@ class _MessageListPageWithState extends State<MessageListPage> {
                         Container(
                             width: double.infinity,
                             height: MediaQuery.of(ctx).size.height * 0.75,
-                            child:ListView.builder(
+                            child: ListView.builder(
                                 itemCount: Conversations.length,
                                 itemBuilder: (context, index) {
                                     var conversation = Conversations[index];
