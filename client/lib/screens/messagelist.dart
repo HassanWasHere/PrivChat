@@ -40,13 +40,16 @@ class _MessageListPageWithState extends State<MessageListPage> {
                         var sender_id = message['sender_id'];
                         DecryptMessage(message['content'], privateKey).then((content){
                             if (other_user_id.toString() == message['sender_id'].toString()){
-                                newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser);
+                                setState( () => newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser));
                             } else {
-                                newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser);
+                                setState( () => newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser));
                             };
                         });
                     });
-                    setState( () => Conversations.add(newConversation));
+                    setState( (){
+                        print("Adding new conversation, updating state");
+                        Conversations.add(newConversation);
+                    });
                 });
             });
         });
@@ -82,14 +85,14 @@ class _MessageListPageWithState extends State<MessageListPage> {
                             width: double.infinity,
                             height: MediaQuery.of(ctx).size.height * 0.75,
                             child: ListView.builder(
-                                itemCount: Conversations.length,
+                            itemCount: Conversations.length,
                                 itemBuilder: (context, index) {
                                     var conversation = Conversations[index];
                                     String messageContent;
                                     if (conversation.getMessages().length == 0){
                                         messageContent = "No messages sent to this user";
                                     } else {
-                                        messageContent = conversation.getMessages()[0].content;
+                                        messageContent = conversation.getMessages()[conversation.getMessages().length-1].content;
                                     }
                                     
                                     return ListTile(
