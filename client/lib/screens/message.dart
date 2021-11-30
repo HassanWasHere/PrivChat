@@ -84,13 +84,11 @@ class _MessagePageWithState extends State<MessagePage> {
                                 child: Container(
                                     height: 240.0,
                                     width: width,
-                                    //padding: EdgeInsets.all(18.0),
                                     child: ListView.builder(
                                         itemCount: currentConversation.messages.length,
                                         reverse: true,
                                         itemBuilder: (context, index) {
                                             var message = currentConversation.messages[currentConversation.messages.length-1-index];
-                                            print(message.recipient.username);
                                             return Padding(
                                                 padding: EdgeInsets.only(bottom: 8),
                                                 child: Align(

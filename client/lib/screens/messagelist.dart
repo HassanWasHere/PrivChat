@@ -30,23 +30,20 @@ class _MessageListPageWithState extends State<MessageListPage> {
     void loadConversations(String data, _){
         Conversations = <Conversation>[];
         var conversationsJSON = jsonDecode(data);
-        print(conversationsJSON.toString());
         conversationsJSON.forEach((other_user_id, message_list){
+            print("OTHER USER ID $other_user_id");
             UserAPI.createUserFromID(int.parse(other_user_id)).then((otherUser){
                 var newConversation = Conversation(otherUser);
                 message_list.forEach((message){
-                    User sender;
-                    User recipient;
-                    print("OTHER USER: $other_user_id");
-                    print("SENDER: $message['sender_id']");
+                    var sender_id = message['sender_id'];
                     if (other_user_id == message['sender_id']){
-                        sender = otherUser;
-                        recipient = widget.thisUser;
+                        print("CONDITION 1");
+                        newConversation.addMessage(message['message_id'], message['content'], otherUser, widget.thisUser);
                     } else {
-                        sender = widget.thisUser;
-                        recipient = otherUser;
+                        print("CONDITION 2");
+                        newConversation.addMessage(message['message_id'], message['content'], widget.thisUser, otherUser);
                     }
-                    newConversation.addMessage(message['message_id'], message['content'], sender, recipient);
+                    
                 });
                 setState( () => Conversations.add(newConversation));
             });
