@@ -43,7 +43,7 @@ Future<User> createUserFromID(num user_id) async {
         },
     );
     var userData = jsonDecode(response.body);
-    return User(user_id, userData[0], "fornow");
+    return User(user_id, userData[0], userData[1]);
 }
 
 Future<User> createUserFromUsername(String user_name) async {
@@ -53,7 +53,7 @@ Future<User> createUserFromUsername(String user_name) async {
         },
     );
     var userData = jsonDecode(response.body);
-    return User(userData[0], user_name, "fornow");
+    return User(userData[0], user_name, userData[1]);
 }
 
 Future<Client> createClientFromUsernameAndPassword(String user_name, String password) async {

@@ -10,6 +10,8 @@ import '../api/user.dart' as UserAPI;
 import 'transition.dart' as TransitionHandler;
 import 'message.dart';
 import 'composemessage.dart';
+import '../handlers/encrypt.dart';
+import '../handlers/storage.dart';
 class MessageListPage extends StatefulWidget {
 
     String Response;
@@ -30,24 +32,25 @@ class _MessageListPageWithState extends State<MessageListPage> {
     void loadConversations(String data, _){
         Conversations = <Conversation>[];
         var conversationsJSON = jsonDecode(data);
-        conversationsJSON.forEach((other_user_id, message_list){
-            print("OTHER USER ID $other_user_id");
-            UserAPI.createUserFromID(int.parse(other_user_id)).then((otherUser){
-                var newConversation = Conversation(otherUser);
-                message_list.forEach((message){
-                    var sender_id = message['sender_id'];
-                    if (other_user_id == message['sender_id']){
-                        print("CONDITION 1");
-                        newConversation.addMessage(message['message_id'], message['content'], otherUser, widget.thisUser);
-                    } else {
-                        print("CONDITION 2");
-                        newConversation.addMessage(message['message_id'], message['content'], widget.thisUser, otherUser);
-                    }
-                    
+        getKey(widget.thisUser.username).then((privateKey){
+            conversationsJSON.forEach((other_user_id, message_list){
+                UserAPI.createUserFromID(int.parse(other_user_id)).then((otherUser){
+                    var newConversation = Conversation(otherUser);
+                    message_list.forEach((message){
+                        var sender_id = message['sender_id'];
+                        DecryptMessage(message['content'], privateKey).then((content){
+                            if (other_user_id.toString() == message['sender_id'].toString()){
+                                newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser);
+                            } else {
+                                newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser);
+                            };
+                        });
+                    });
+                    setState( () => Conversations.add(newConversation));
                 });
-                setState( () => Conversations.add(newConversation));
             });
         });
+        
     }
     void initState(){
         super.initState();

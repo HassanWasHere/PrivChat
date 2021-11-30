@@ -11,6 +11,10 @@ import 'package:cryptography/cryptography.dart';
     }
 
     Future<String> EncryptMessage(String message, String pubkey){
+        return RSA.encryptPKCS1v15(message, pubkey);
+    }
+
+    Future<String> DecryptMessage(String message, String pubkey){
         return RSA.decryptPKCS1v15(message, pubkey);
     }
 

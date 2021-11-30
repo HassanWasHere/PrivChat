@@ -11,6 +11,8 @@ import '../../objects/httppostresponse.dart';
 import 'messagelist.dart';
 import '../../widgets/input_box.dart';
 import '../../widgets/text_bubble.dart';
+import '../../handlers/encrypt.dart';
+import '../../handlers/storage.dart';
 
 class MessagePage extends StatefulWidget {
 
@@ -33,21 +35,30 @@ class _MessagePageWithState extends State<MessagePage> {
     void initaliseSocket(){
         widget.socket.sock?.on("message", (data){
             if (data[0] == widget.currentConversation.other_user.user_id){
-                setState( (){
-                    widget.currentConversation.addMessage(-1, data[1], widget.thisUser, widget.currentConversation.other_user);
+                getKey(widget.thisUser.username).then((privateKey){
+                    DecryptMessage(data[1], privateKey).then((content){
+                        setState( (){
+                            widget.currentConversation.addMessage(-1, data[1], widget.currentConversation.other_user, widget.thisUser);
+                        });
+                    });
                 });
+                
             }
         });
     }
 
     void sendMessage(BuildContext ctx){
-        var content = messageBoxController.text;
-        widget.socket.sock?.emit("message", [widget.currentConversation.other_user.user_id, content]);
-        //messageAPI.SendMessage(widget.thisUser, widget.currentConversation.other_user, content).then((HttpPostResponse a){});
-        setState((){
-            widget.currentConversation.addMessage(-1, content, widget.thisUser, widget.currentConversation.other_user);
+        var key = widget.currentConversation.other_user.pubkey;
+        EncryptMessage(messageBoxController.text, widget.currentConversation.other_user.pubkey)
+        .then((content){
+            widget.socket.sock?.emit("message", [widget.currentConversation.other_user.user_id, content]);
+            setState((){
+                widget.currentConversation.addMessage(-1, messageBoxController.text, widget.thisUser, widget.currentConversation.other_user);
+            });
+        })
+        .catchError((err){
+            print(err.cause.toString());
         });
-        
     }
 
     void initState(){
@@ -89,10 +100,11 @@ class _MessagePageWithState extends State<MessagePage> {
                                         reverse: true,
                                         itemBuilder: (context, index) {
                                             var message = currentConversation.messages[currentConversation.messages.length-1-index];
+                                            var colour = message.sender.user_id == widget.thisUser.user_id ? Colors.white : Colors.green.shade200;
                                             return Padding(
                                                 padding: EdgeInsets.only(bottom: 8),
                                                 child: Align(
-                                                    child: Bubble(message.sender.username, message.content).build(ctx),
+                                                    child: Bubble(message.sender.username, message.content, colour).build(ctx),
                                                     alignment: message.sender.user_id == widget.thisUser.user_id ? Alignment.topRight : Alignment.topLeft,
                                                 )
                                             );

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 class Bubble {
     String name;
     String content;
+    Color colour;
 
-    Bubble(@required this.name, @required this.content);
+    Bubble(@required this.name, @required this.content, @required this.colour);
 
     @override
     Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class Bubble {
                         color: Colors.black.withOpacity(.12)
                     )
                 ],
-                color: Colors.grey,
+                color: this.colour,
                 borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * .25),
             ),
         );
