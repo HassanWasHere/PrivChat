@@ -14,9 +14,9 @@ def create_route(app):
             recent_addr[request.remote_addr] = time.time()
             request_data = request.get_json()
             if request_data:
-                username = validate_input.username(request_data["username"])
-                password = validate_input.password(request_data["password"])
-                pub_key = validate_input.pubkey(request_data["pubkey"])
+                username = validate_input.valid_username(request_data["username"])
+                password = validate_input.valid_password(request_data["password"])
+                pub_key = validate_input.valid_pubkey(request_data["pubkey"])
                 if username and password and pub_key: 
                     password = password_hash.hash_password(password)
                     db = dbhandler.Database("privchat.db")

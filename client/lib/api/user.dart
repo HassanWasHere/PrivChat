@@ -1,3 +1,18 @@
+/* 
+    Project: PrivChat
+    Application: Client
+    File name: user.dart
+    Author: Hassan Mahmood
+    
+    This file provides functions that interact with the REST API user
+    endpoint that allows the user id, username and public key to be fetched
+    with either a user id or username then create a User class with this
+    information
+
+
+
+*/
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -11,8 +26,13 @@ import '../../objects/client.dart';
 import '../../objects/httppostresponse.dart';
 import '../../handlers/encrypt.dart';
 import '../../handlers/config.dart';
+/* 
+    Import needed files, this will introduce encryption and configuration 
+    functions into the namespace and user, message, client and http response objects.
+*/
 
-Future<HttpPostResponse> Signup(String username, String password, String pubkey) async {
+
+Future<HttpPostResponse> Signup(String username, String password, String pubkey) async { // This is an asynchronous function, it takes in 3 strings as parameter
     final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 
         headers: <String, String>{
             'Content-Type': 'application/json',
