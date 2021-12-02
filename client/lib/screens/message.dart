@@ -55,7 +55,6 @@ class _MessagePageWithState extends State<MessagePage> {
     void sendMessage(BuildContext ctx){
         var key = widget.currentConversation.other_user.pubkey;
         var original_message = messageBoxController.text;
-        print("OTHER USER PUBLIC KEY IS $key");
         EncryptMessage(original_message, key)
         .then((content){
             widget.socket.sock?.emitWithAck("message", [widget.currentConversation.other_user.user_id, content], ack: (message_id){
