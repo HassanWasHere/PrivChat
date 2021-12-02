@@ -16,7 +16,7 @@ def create_route(app):
             if request_data:
                 username = validate_input.valid_username(request_data["username"])
                 password = validate_input.valid_password(request_data["password"])
-                pub_key = validate_input.valid_pubkey(request_data["pubkey"])
+                pub_key = request_data["pubkey"]#validate_input.valid_pubkey(request_data["pubkey"])
                 if username and password and pub_key: 
                     password = password_hash.hash_password(password)
                     db = dbhandler.Database("privchat.db")

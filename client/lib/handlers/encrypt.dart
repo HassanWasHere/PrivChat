@@ -6,7 +6,7 @@ import 'package:cryptography/cryptography.dart';
 //class EncryptionHandler {
 
     Future<List> GeneratePubPrivKeyPair() async{
-        var keyPair = await RSA.generate(2048);
+        var keyPair = await RSA.generate(1024);
         return [keyPair.privateKey, keyPair.publicKey];
     }
 

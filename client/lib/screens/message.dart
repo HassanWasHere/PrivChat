@@ -36,6 +36,8 @@ class _MessagePageWithState extends State<MessagePage> {
         widget.socket.sock?.on("message", (data){
             if (data[0] == widget.currentConversation.other_user.user_id){
                 getKey(widget.thisUser.username).then((privateKey){
+                    var a = data[1];
+                    print("ATTEMPTING TO DECRYPT $a USING $privateKey");
                     DecryptMessage(data[1], privateKey)
                     .then((content){
                         setState( (){
