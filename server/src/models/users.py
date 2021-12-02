@@ -47,4 +47,5 @@ class User:
                     conversations[int(other_user_id)].append(msg.__dict__)
         return conversations
     def send_message(self, recipient_id, content):
-        return self.__db.execute("INSERT INTO messages (content, time_sent, sender_id, recipient_id) VALUES (?,?,?,?)", [content, time(), self.user_id, recipient_id])
+        self.__db.execute("INSERT INTO messages (content, time_sent, sender_id, recipient_id) VALUES (?,?,?,?)", [content, time(), self.user_id, recipient_id])
+        return self.__db.execute("SELECT last_insert_rowid()", []).fetchone()[0]

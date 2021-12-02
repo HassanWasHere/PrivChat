@@ -53,12 +53,17 @@ class _MessagePageWithState extends State<MessagePage> {
 
     void sendMessage(BuildContext ctx){
         var key = widget.currentConversation.other_user.pubkey;
-        EncryptMessage(messageBoxController.text, widget.currentConversation.other_user.pubkey)
+        var original_message = messageBoxController.text;
+        EncryptMessage(original_message, widget.currentConversation.other_user.pubkey)
         .then((content){
-            widget.socket.sock?.emit("message", [widget.currentConversation.other_user.user_id, content]);
-            setState((){
-                widget.currentConversation.addMessage(-1, messageBoxController.text, widget.thisUser, widget.currentConversation.other_user);
+            widget.socket.sock?.emitWithAck("message", [widget.currentConversation.other_user.user_id, content], ack: (message_id){
+                print("MESSAGE IS ID $message_id");
+                storeMessage(message_id, original_message);
+                setState((){
+                    widget.currentConversation.addMessage(message_id, original_message, widget.thisUser, widget.currentConversation.other_user);
+                });
             });
+            
         })
         .catchError((err){
             print(err.cause.toString());

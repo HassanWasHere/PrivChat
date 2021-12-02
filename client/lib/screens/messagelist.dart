@@ -38,18 +38,30 @@ class _MessageListPageWithState extends State<MessageListPage> {
                     var newConversation = Conversation(otherUser);
                     message_list.forEach((message){
                         var sender_id = message['sender_id'];
-                        print(message['content']);
-                        DecryptMessage(message['content'], privateKey)
-                        .then((content){
+                        getMessage(message['message_id'])
+                        .then((alreadycontent){
+                            print("MESSAGE ALREADY STORED .. FETCHING FROM LOCAL STORAGE!");
                             if (other_user_id.toString() == message['sender_id'].toString()){
-                                setState( () => newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser));
+                                setState( () => newConversation.addMessage(message['message_id'], alreadycontent, otherUser, widget.thisUser));
                             } else {
-                                setState( () => newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser));
+                                setState( () => newConversation.addMessage(message['message_id'], alreadycontent, widget.thisUser, otherUser));
                             };
                         })
                         .catchError((e){
-                            setState( () => newConversation.addMessage(message['message_id'], e.cause, otherUser, widget.thisUser));
+                            DecryptMessage(message['content'], privateKey)
+                            .then((content){
+                                storeMessage(message['message_id'], content);
+                                if (other_user_id.toString() == message['sender_id'].toString()){
+                                    setState( () => newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser));
+                                } else {
+                                    setState( () => newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser));
+                                };
+                            })
+                            .catchError((e){
+                                setState( () => newConversation.addMessage(message['message_id'], e.cause, otherUser, widget.thisUser));
+                            });
                         });
+                        
                     });
                     setState( (){
                         print("Adding new conversation, updating state");

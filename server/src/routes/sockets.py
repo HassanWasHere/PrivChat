@@ -33,12 +33,14 @@ def create_socket_routes(socketio):
             recipient = users.User.create_from_id(recipient_id)
             if recipient:
                 #try:
-                user.send_message(recipient.user_id, content)
+                message_id = user.send_message(recipient.user_id, content)
                 recipient_room = None
                 for username in authenticated_sockets:
                     if username == recipient.username:
                         recipient_room = authenticated_sockets[username]
                 if recipient_room:
                     socketio.emit("message", [user.user_id, content], to=recipient_room)
+                print("MESSAGE ID IS " + str(message_id))
+                return message_id
                 #except:
                 #    print("no")
