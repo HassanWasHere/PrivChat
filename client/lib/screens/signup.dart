@@ -23,10 +23,13 @@ class _SignupPageWithState extends State<SignupPage> {
 
     void SignupRequest(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
+            setState(() => errorMessage = "Checking username availibility.." );
             userAPI.isUsernameAvailable(usernameController.text).then((available){
                 if (available){ 
+                    setState(() => errorMessage = "Fetching encryption keys.." );
                     storage.getKey(usernameController.text)
                         .catchError((e) {
+                            setState(() => errorMessage = "Generating encryption keys.." );
                             encrypt.GeneratePubPrivKeyPair().then((asd){
                                 String privateKey = asd[0];
                                 String publicKey = asd[1];
