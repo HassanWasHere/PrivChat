@@ -36,10 +36,14 @@ class _MessagePageWithState extends State<MessagePage> {
         widget.socket.sock?.on("message", (data){
             if (data[0] == widget.currentConversation.other_user.user_id){
                 getKey(widget.thisUser.username).then((privateKey){
-                    DecryptMessage(data[1], privateKey).then((content){
+                    DecryptMessage(data[1], privateKey)
+                    .then((content){
                         setState( (){
-                            widget.currentConversation.addMessage(-1, data[1], widget.currentConversation.other_user, widget.thisUser);
+                            widget.currentConversation.addMessage(-1, content, widget.currentConversation.other_user, widget.thisUser);
                         });
+                    })
+                    .catchError((e){
+                        setState( () => widget.currentConversation.addMessage(-1, e.cause, widget.currentConversation.other_user, widget.thisUser));
                     });
                 });
                 

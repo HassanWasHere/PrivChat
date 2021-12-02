@@ -38,12 +38,17 @@ class _MessageListPageWithState extends State<MessageListPage> {
                     var newConversation = Conversation(otherUser);
                     message_list.forEach((message){
                         var sender_id = message['sender_id'];
-                        DecryptMessage(message['content'], privateKey).then((content){
+                        print(message['content']);
+                        DecryptMessage(message['content'], privateKey)
+                        .then((content){
                             if (other_user_id.toString() == message['sender_id'].toString()){
                                 setState( () => newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser));
                             } else {
                                 setState( () => newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser));
                             };
+                        })
+                        .catchError((e){
+                            setState( () => newConversation.addMessage(message['message_id'], e.cause, otherUser, widget.thisUser));
                         });
                     });
                     setState( (){
