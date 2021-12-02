@@ -40,7 +40,6 @@ class _MessageListPageWithState extends State<MessageListPage> {
                         var sender_id = message['sender_id'];
                         getMessage(message['message_id'])
                         .then((alreadycontent){
-                            print("MESSAGE ALREADY STORED .. FETCHING FROM LOCAL STORAGE!");
                             if (other_user_id.toString() == message['sender_id'].toString()){
                                 setState( () => newConversation.addMessage(message['message_id'], alreadycontent, otherUser, widget.thisUser));
                             } else {
@@ -64,7 +63,6 @@ class _MessageListPageWithState extends State<MessageListPage> {
                         
                     });
                     setState( (){
-                        print("Adding new conversation, updating state");
                         Conversations.add(newConversation);
                     });
                 });

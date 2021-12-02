@@ -8,7 +8,6 @@ class Conversation {
     List<Message> messages = <Message>[];
 
     void addMessage(num message_id, String content, User sender, User recipient){
-        print("ADDING NEW MESSAGE FROM " + sender.user_id.toString() + " TO " + recipient.user_id.toString());
         messages.add(Message(message_id, content, sender, recipient));
     }
 

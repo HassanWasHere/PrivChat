@@ -17,7 +17,6 @@ import 'encrypt.dart' as encrypt;
     Future<bool> setKey(String username, String key) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         bool Response = await prefs.setString("KEY_$username", await encrypt.AESEncrypt(key));
-        print("STORED KEY: " + (await prefs.getString("KEY_$username") as String));
         return true;
     }
 
@@ -36,7 +35,6 @@ import 'encrypt.dart' as encrypt;
     Future<bool> storeMessage(num message_id, String key) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         bool Response = await prefs.setString("MESSAGE_$message_id", await encrypt.AESEncrypt(key));
-        print("STORED: " + (await prefs.getString("MESSAGE_$message_id") as String));
         return true;
     }
     

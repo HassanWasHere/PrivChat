@@ -30,6 +30,7 @@ class _SignupPageWithState extends State<SignupPage> {
                             encrypt.GeneratePubPrivKeyPair().then((asd){
                                 String privateKey = asd[0];
                                 String publicKey = asd[1];
+                                print("SENDING PUBLIC KEY TO SERVER $publicKey");
                                 storage.setKey(usernameController.text, privateKey)
                                     .catchError((e){
                                         setState((){

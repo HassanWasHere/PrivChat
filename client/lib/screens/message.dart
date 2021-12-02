@@ -37,7 +37,6 @@ class _MessagePageWithState extends State<MessagePage> {
             if (data[0] == widget.currentConversation.other_user.user_id){
                 getKey(widget.thisUser.username).then((privateKey){
                     var a = data[1];
-                    print("ATTEMPTING TO DECRYPT $a USING $privateKey");
                     DecryptMessage(data[1], privateKey)
                     .then((content){
                         setState( (){
@@ -56,10 +55,10 @@ class _MessagePageWithState extends State<MessagePage> {
     void sendMessage(BuildContext ctx){
         var key = widget.currentConversation.other_user.pubkey;
         var original_message = messageBoxController.text;
-        EncryptMessage(original_message, widget.currentConversation.other_user.pubkey)
+        print("OTHER USER PUBLIC KEY IS $key");
+        EncryptMessage(original_message, key)
         .then((content){
             widget.socket.sock?.emitWithAck("message", [widget.currentConversation.other_user.user_id, content], ack: (message_id){
-                print("MESSAGE IS ID $message_id");
                 storeMessage(message_id, original_message);
                 setState((){
                     widget.currentConversation.addMessage(message_id, original_message, widget.thisUser, widget.currentConversation.other_user);

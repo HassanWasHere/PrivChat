@@ -12,7 +12,7 @@ def create_route(app):
         user_name = request.args.get("username")
         if user_id:
             try:
-                user_info = db.execute("SELECT users.username, keys.pub_key FROM users,keys WHERE users.user_id=?", [user_id]).fetchone()
+                user_info = db.execute("SELECT users.username, keys.pub_key FROM users,keys WHERE users.user_id=keys.user_id AND users.user_id=?", [user_id]).fetchone()
                 return json.dumps(user_info)
             except:
                 return "Error fetching user information", 401
