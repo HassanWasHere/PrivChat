@@ -41,9 +41,9 @@ class _MessageListPageWithState extends State<MessageListPage> {
                         getMessage(message['message_id'])
                         .then((alreadycontent){
                             if (other_user_id.toString() == message['sender_id'].toString()){
-                                setState( () => newConversation.addMessage(message['message_id'], alreadycontent, otherUser, widget.thisUser));
+                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, otherUser, widget.thisUser));
                             } else {
-                                setState( () => newConversation.addMessage(message['message_id'], alreadycontent, widget.thisUser, otherUser));
+                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, widget.thisUser, otherUser));
                             };
                         })
                         .catchError((e){
@@ -51,13 +51,13 @@ class _MessageListPageWithState extends State<MessageListPage> {
                             .then((content){
                                 storeMessage(message['message_id'], content);
                                 if (other_user_id.toString() == message['sender_id'].toString()){
-                                    setState( () => newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser));
+                                    setState( () => newConversation.add_message(message['message_id'], content, otherUser, widget.thisUser));
                                 } else {
-                                    setState( () => newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser));
+                                    setState( () => newConversation.add_message(message['message_id'], content, widget.thisUser, otherUser));
                                 };
                             })
                             .catchError((e){
-                                setState( () => newConversation.addMessage(message['message_id'], e.cause, otherUser, widget.thisUser));
+                                setState( () => newConversation.add_message(message['message_id'], e.cause, otherUser, widget.thisUser));
                             });
                         });
                         
@@ -103,15 +103,17 @@ class _MessageListPageWithState extends State<MessageListPage> {
                             itemCount: Conversations.length,
                                 itemBuilder: (context, index) {
                                     var conversation = Conversations[index];
+                                    var other_user = conversation.get_other_user();
+                                    var messages = conversation.get_messages();
                                     String messageContent;
-                                    if (conversation.getMessages().length == 0){
+                                    if (messages.length == 0){
                                         messageContent = "No messages sent to this user";
                                     } else {
-                                        messageContent = conversation.getMessages()[conversation.getMessages().length-1].content;
+                                        messageContent = messages[messages.length-1].get_content();
                                     }
                                     
                                     return ListTile(
-                                        title: Text(conversation.other_user.username),
+                                        title: Text(other_user.get_username()),
                                         subtitle: Text(messageContent),
                                         onTap: (){showConversation(ctx, conversation);}
                                     );

@@ -4,7 +4,6 @@ import '../../widgets/large_button.dart';
 import 'signup.dart';
 import 'transition.dart' as TransitionHandler;
 import '../../api/user.dart' as userAPI;
-import '../../api/message.dart' as messageAPI;
 import '../../objects/client.dart';
 import '../../objects/websocket.dart';
 import 'messagelist.dart';

@@ -8,6 +8,4 @@ if  Config.get_value("PRIVCHAT_SECRET_KEY"):
 else:
     from src import *
     from src.routes import start
-    import src.models
-    start.start_listening()
 

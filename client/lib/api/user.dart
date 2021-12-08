@@ -23,7 +23,7 @@ import 'package:http/http.dart' as http;
 import '../../objects/messages.dart';
 import '../../objects/user.dart';
 import '../../objects/client.dart';
-import '../../objects/httppostresponse.dart';
+import '../../objects/restapiresponse.dart';
 import '../../handlers/encrypt.dart';
 import '../../handlers/config.dart';
 /* 
@@ -32,7 +32,7 @@ import '../../handlers/config.dart';
 */
 
 
-Future<HttpPostResponse> Signup(String username, String password, String pubkey) async { // This is an asynchronous function, it takes in 3 strings as parameter
+Future<RESTAPIResponse> Signup(String username, String password, String pubkey) async { // This is an asynchronous function, it takes in 3 strings as parameter
     final response = await http.post(Uri.parse('$API_ENDPOINT_URL/signup'), 
         headers: <String, String>{
             'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ Future<HttpPostResponse> Signup(String username, String password, String pubkey)
             'pubkey': pubkey,
         })
     );
-    return HttpPostResponse(response.statusCode == 200, response.body);
+    return RESTAPIResponse(response.statusCode == 200, response.body);
 }
 
 Future<bool> isUsernameAvailable(String username) async {

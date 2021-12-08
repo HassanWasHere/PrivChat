@@ -23,13 +23,13 @@ class WebSocketServer:
                 self.__socketio.emit("conversation", json.dumps(user.get_conversations()), to=request.sid)
                     
         @self.__socketio.on('conversations')
-        def return_conversations(self):
+        def return_conversations():
             user = self.get_user_from_sid(request.sid)
             if user:
                 self.__socketio.emit("conversation", json.dumps(user.get_conversations()), to=request.sid)
 
         @self.__socketio.on("message")
-        def send_message(self, recipient_id, content):
+        def send_message(recipient_id, content):
             print(f"RECIEVED MESSAGE {recipient_id} {content}")
             user = self.get_user_from_sid(request.sid)
             if user:

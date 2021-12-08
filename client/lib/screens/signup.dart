@@ -45,7 +45,7 @@ class _SignupPageWithState extends State<SignupPage> {
                                             userAPI.Signup(usernameController.text, passwordController.text, publicKey)
                                             .then((erg){
                                                 setState((){ 
-                                                    errorMessage = erg.ErrorMessage;
+                                                    errorMessage = erg.Content;
                                                 });
                                             });
                                         } else {
@@ -59,7 +59,7 @@ class _SignupPageWithState extends State<SignupPage> {
                             userAPI.Signup(usernameController.text, passwordController.text, key)
                                 .then((erg){
                                     setState((){
-                                        errorMessage = erg.ErrorMessage;
+                                        errorMessage = erg.Content;
                                     });
                                 });
                         });
