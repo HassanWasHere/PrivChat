@@ -11,7 +11,7 @@ def verify_password(password, hashed):
 
 def verify_user(user, given_password):
     if user:
-        return verify_password(given_password.encode("utf-8"), user.password.encode("utf-8"))
+        return verify_password(given_password.encode("utf-8"), user.get_password().encode("utf-8"))
     else:
         return False
 

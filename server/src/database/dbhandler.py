@@ -4,25 +4,27 @@ from src.config.handler import *
 
 class Database:
     def __init__(self, loc):
-        self.connection = sqlite3.connect(Config.get_value("PRIVCHAT_ROOT_DIR") + "/db/" + loc)
-        self.handle = self.connection.cursor()
+        self.__connection = sqlite3.connect(Config.get_value("PRIVCHAT_ROOT_DIR") + "/db/" + loc)
+        self.__handle = self.__connection.cursor()
     
     def __del__(self):
-        self.connection.close()
+        self.__connection.close()
 
     def execute(self, command, args=None):
         Result = None
         try:
-            Result = self.handle.execute(command, args)
-            self.connection.commit()
+            Result = self.__handle.execute(command, args)
+            self.__connection.commit()
         except sqlite3.Error as err:
             print(f"SQL ERROR: {err}")
         return Result
     def execute_script(self, script):
         Result = None
         try:
-            Result = self.handle.executescript(script)
-            self.connection.commit()
+            Result = self.__handle.executescript(script)
+            self.__connection.commit()
         except sqlite3.Error as err:
             print(f"SQL SCRIPT ERROR: {err}")
         return Result
+    def get_last_row_id(self):
+        return self.__handle.lastrowid
