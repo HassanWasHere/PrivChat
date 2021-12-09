@@ -31,7 +31,7 @@ class _MessagePageWithState extends State<MessagePage> {
     final messageBoxController = TextEditingController();
 
     void initaliseSocket(){
-        widget.socket.sock?.on("message", (data){
+        widget.socket.get_socket().on("message", (data){
             var other_user = widget.currentConversation.get_other_user();
             if (data[0] == other_user.get_user_id()){
                 getKey(widget.thisUser.get_username()).then((privateKey){
@@ -60,7 +60,7 @@ class _MessagePageWithState extends State<MessagePage> {
             print(content);
             print(key);
             print(other_user.get_user_id());
-            widget.socket.sock?.emitWithAck("message", [other_user.get_user_id(), content], ack: (message_id){
+            widget.socket.get_socket().emitWithAck("message", [other_user.get_user_id(), content], ack: (message_id){
                 storeMessage(message_id, original_message);
                 setState((){
                     widget.currentConversation.add_message(message_id, original_message, widget.thisUser, other_user);
