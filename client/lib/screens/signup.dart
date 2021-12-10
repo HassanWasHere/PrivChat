@@ -6,6 +6,14 @@ import '../../handlers/encrypt.dart' as encrypt;
 import '../../handlers/storage.dart' as storage;
 import 'transition.dart' as TransitionHandler;
 import 'login.dart';
+/* The SignupPage class is the base class for the dynamic signup page.
+This class inherits from the 'StatefulWidget' class provided by the Flutter framework allowing it to be dynamic
+A dynamic widget is one that can update/change when a variable is changed.
+The 'StatefulWidget' class has a createState function that needs to be overriden to
+return a State. 
+The _SignupPageWithState extends a State object which is what processes the change.
+One StatefulWidget can have multiple states, but I only have one in this case.
+*/
 class SignupPage extends StatefulWidget {
     
     SignupPage({Key? key}) : super(key: key);
@@ -15,21 +23,27 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageWithState extends State<SignupPage> {
-    String errorMessage = "";
+
+    String labelMessage = "";
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
-    //final EncryptionHandler = EncryptionHandler();
-
+    /*
+        This procedure first ensures that the password and confirm password boxes are the same.
+        If they are, then the program will next use the UserAPI to confirm if the username is available.
+        If the username is available, try fetch a private key for that username, if not found then
+        generate the public and private keys, send the username, password and public key to the
+        server.
+    */
     void SignupRequest(BuildContext ctx){
         if (passwordController.text == confirmPasswordController.text){
-            setState(() => errorMessage = "Checking username availibility.." );
+            setState(() => labelMessage = "Checking username availibility.." );
             userAPI.isUsernameAvailable(usernameController.text).then((available){
                 if (available){ 
-                    setState(() => errorMessage = "Fetching encryption keys.." );
+                    setState(() => labelMessage = "Fetching encryption keys.." );
                     storage.getKey(usernameController.text)
                         .catchError((e) {
-                            setState(() => errorMessage = "Generating encryption keys.." );
+                            setState(() => labelMessage = "Generating encryption keys.." );
                             encrypt.GeneratePubPrivKeyPair().then((asd){
                                 String privateKey = asd[0];
                                 String publicKey = asd[1];
@@ -37,7 +51,7 @@ class _SignupPageWithState extends State<SignupPage> {
                                 storage.setKey(usernameController.text, privateKey)
                                     .catchError((e){
                                         setState((){
-                                            errorMessage = e.toString();
+                                            labelMessage = e.toString();
                                         });
                                     })
                                     .then((success){
@@ -45,11 +59,11 @@ class _SignupPageWithState extends State<SignupPage> {
                                             userAPI.Signup(usernameController.text, passwordController.text, publicKey)
                                             .then((erg){
                                                 setState((){ 
-                                                    errorMessage = erg.Content;
+                                                    labelMessage = erg.Content;
                                                 });
                                             });
                                         } else {
-                                            errorMessage = "An error occurred2";
+                                            labelMessage = "An error occurred2";
                                         }
                                         
                                     });
@@ -59,28 +73,31 @@ class _SignupPageWithState extends State<SignupPage> {
                             userAPI.Signup(usernameController.text, passwordController.text, key)
                                 .then((erg){
                                     setState((){
-                                        errorMessage = erg.Content;
+                                        labelMessage = erg.Content;
                                     });
                                 });
                         });
                 } else {
                     setState((){
-                        errorMessage = "not available 1";
+                        labelMessage = "Username not available";
                     });
                 }
             });
         } else {
             setState((){
-                errorMessage = "not matching";
+                labelMessage = "Confirm password and password boxes not matching.";
             });
         }
     }
-
+    /*
+        Responsible for allowing transition back to the login screen.
+    */
     void LoginTransition(BuildContext ctx){
         TransitionHandler.Transition(ctx, LoginPage());
     }
-    void donothing(BuildContext ctx){}
-
+    /*
+        This function is called to build the UI for the application page.
+    */
     @override
     Widget build(BuildContext ctx){
         return Scaffold(
@@ -108,7 +125,7 @@ class _SignupPageWithState extends State<SignupPage> {
                                 )
                             ),
                             SizedBox(height: 36.0),
-                            Text('$errorMessage'),
+                            Text('$labelMessage'),
                             InputBox(70, 360, false, "Username", usernameController).build(ctx),
                             InputBox(70, 360, true, "Password", passwordController).build(ctx),
                             InputBox(70, 360, true, "Confirm Password", confirmPasswordController).build(ctx),

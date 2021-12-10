@@ -12,8 +12,21 @@ import 'message.dart';
 import 'composemessage.dart';
 import '../handlers/encrypt.dart';
 import '../handlers/storage.dart';
+/*
+    These classes are responsible for building a dynamic message page.
+    The message page needs to be dynamic so new conversations and messages can be 
+    shown to the user. 
+*/
 class MessageListPage extends StatefulWidget {
 
+    /* 
+        Response is the result from the login screen after fetching conversations through the 
+        websocket by sending 'Conversations'. 
+        This response data is then JSON decoded and parsed. 
+        Conversations and messages are created using this data. 
+        Socket represents the WebSocket where data is sent between the sevrer and the client.
+        thisUser represents the user that is currently logged in.
+    */
     String Response;
     WebSocket socket;
     Client thisUser;
@@ -28,7 +41,14 @@ class MessageListPage extends StatefulWidget {
 
 class _MessageListPageWithState extends State<MessageListPage> {
     var Conversations = <Conversation>[];
-    String test = '';
+    /*
+        The loadConversations procedure is responsible for parsing the message data
+        It creates conversation objects, filled with message objects.
+        When adding a new conversation to the list, we call setState() so that the UI knows it needs to
+        update.
+        For each message, we first see if the message exists in cached form in local storage. If it does exist then
+        
+    */
     void loadConversations(String data, _){
         Conversations = <Conversation>[];
         var conversationsJSON = jsonDecode(data);
