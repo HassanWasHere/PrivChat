@@ -90,17 +90,21 @@ class _MessageListPageWithState extends State<MessageListPage> {
         });
         
     }
+    /*
+        This is called when the state is created. This is here instead of build so these aren't called everytime the UI needs to be updated.
+        This will load the conversations and make it so when the WebSocket returns the conversation data, loadConversations is called
+    */
     void initState(){
         super.initState();
         loadConversations(widget.Response, null);
         widget.socket.updateMessageCallback = loadConversations;
     }
-
+    // This procedure will make the program move onto the Message view page
     void showConversation(BuildContext ctx, Conversation conversation){
         var conversationPage = MessagePage(widget.thisUser, conversation, widget.socket);
         TransitionHandler.Transition(ctx, conversationPage);
     }
-
+    // This procedure will make the program move onto the new Message view page
     void createMessage(BuildContext ctx){
         var composePage = ComposePage(widget.thisUser, widget.socket);
         TransitionHandler.Transition(ctx, composePage);

@@ -8,6 +8,10 @@ import '../../objects/client.dart';
 import '../../objects/websocket.dart';
 import 'messagelist.dart';
 
+/*
+    The LoginPage class is responsible for presenting the user with the login screen. 
+*/
+
 
 class LoginPage extends StatefulWidget {
     
@@ -22,13 +26,30 @@ class _LoginPageWithState extends State<LoginPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
 
+    /* 
+        The SignupTransition procedure allows the program to transition to the signup screen
+    */
+
     void SignupTransition(BuildContext ctx){
         TransitionHandler.Transition(ctx, SignupPage());
     }
+
+    /* 
+        The MessageListTransition procedure allows the program to transition to the message list screen
+        where all the conversations will be displayed. The program will pass through the JSON
+        data is has recieved from the server through the WebSocket.
+    */
+
     void MessageListTransition(BuildContext ctx, Client thisUser, String Response, WebSocket socket){
         MessageListPage page = MessageListPage(thisUser, Response, socket);
         TransitionHandler.Transition(ctx, page);
     }
+
+    /* 
+        This procedure is called when the user presses the login button. A user object is created to 
+        represent the user using the specified username and password. A WebSocket is then created and
+        when the conversation data is recieved, it will transition to the MessageList page. 
+    */
 
     void ProcessLogin(BuildContext ctx){
         

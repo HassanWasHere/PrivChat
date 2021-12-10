@@ -12,8 +12,17 @@ import '../../widgets/text_bubble.dart';
 import '../../handlers/encrypt.dart';
 import '../../handlers/storage.dart';
 
-class MessagePage extends StatefulWidget {
+/*
+    The MessagePage and MessgePageWithState classes here are used to create the Message view page.  
+    This page is responsible for showing all messages in a conversation and allowing the user
+    to send a message to the other user in the conversation.
+*/
 
+class MessagePage extends StatefulWidget {
+    /* 
+        currentConversation represents the conversation this view is displaying. 
+        The constructor requires the conversation, the currently logged in user and the websocket.
+    */
     Conversation currentConversation;
     Client thisUser;
     WebSocket socket;
@@ -29,7 +38,13 @@ class MessagePage extends StatefulWidget {
 
 class _MessagePageWithState extends State<MessagePage> {
     final messageBoxController = TextEditingController();
-
+    /*
+        initialiseSocket makes the WebSocket listen for a new message request.
+        When the server sends the new message request, this function will check
+        if the sender of the message is the user this conversation is with.
+        If this is the case, the message will be decrypted then added into the
+        current conversation using setState to tell the UI to update.
+    */
     void initaliseSocket(){
         widget.socket.get_socket().on("message", (data){
             var other_user = widget.currentConversation.get_other_user();
@@ -50,6 +65,11 @@ class _MessagePageWithState extends State<MessagePage> {
             }
         });
     }
+    /*
+        This procedure is responsible for encrypting the message typed in the
+        message box then storing the message in local storage so it can be displayed
+        later and then sending it to the server through the WebSocket.
+    */
 
     void sendMessage(BuildContext ctx){
         var other_user = widget.currentConversation.get_other_user();
@@ -73,9 +93,17 @@ class _MessagePageWithState extends State<MessagePage> {
         });
     }
 
+    /*
+        When the page state is created, initialise the socket.
+    */
+
     void initState(){
         this.initaliseSocket();
     }
+
+    /*
+        Build the UI for the application.
+    */
 
     @override
     Widget build(BuildContext ctx){
