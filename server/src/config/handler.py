@@ -1,5 +1,5 @@
 import os
-
+# Class responsible for setting and getting system environment variables.
 class Config:    
     @classmethod
     def set_value(cls, key, value):
@@ -8,5 +8,3 @@ class Config:
     def get_value(cls, key):
         return os.getenv(key)
 
-
-Config.get_value("a")

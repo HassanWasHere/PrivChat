@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+
+/* Basic class used to reprsent a large button object used in the UI design
+    It has constructors for the height, width, text for the button and the callback.
+    The callback is the function that is called when the button has been clicked.
+    This is asynchronous programming. We don't want the program to pause execution waiting
+    for the button to be clicked.
+*/
 class LargeButton {
     double height = 65.0;
     double width = double.infinity;
