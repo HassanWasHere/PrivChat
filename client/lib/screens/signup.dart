@@ -36,19 +36,22 @@ class _SignupPageWithState extends State<SignupPage> {
         server.
     */
     void SignupRequest(BuildContext ctx){
-        if (passwordController.text == confirmPasswordController.text){
+      var username = usernameController.text;
+      var password = passwordController.text;
+      if (password == confirmPasswordController.text){
+        if (userAPI.validCredentials(username, password)){
             setState(() => labelMessage = "Checking username availibility.." );
-            userAPI.isUsernameAvailable(usernameController.text).then((available){
+            userAPI.isUsernameAvailable(username).then((available){
                 if (available){ 
                     setState(() => labelMessage = "Fetching encryption keys.." );
-                    storage.getKey(usernameController.text)
+                    storage.getKey(username)
                         .catchError((e) {
                             setState(() => labelMessage = "Generating encryption keys.." );
                             encrypt.GeneratePubPrivKeyPair().then((asd){
                                 String privateKey = asd[0];
                                 String publicKey = asd[1];
                                 print("SENDING PUBLIC KEY TO SERVER $publicKey");
-                                storage.setKey(usernameController.text, privateKey)
+                                storage.setKey(username, privateKey)
                                     .catchError((e){
                                         setState((){
                                             labelMessage = e.toString();
@@ -56,7 +59,7 @@ class _SignupPageWithState extends State<SignupPage> {
                                     })
                                     .then((success){
                                         if (success){
-                                            userAPI.Signup(usernameController.text, passwordController.text, publicKey)
+                                            userAPI.Signup(username, password, publicKey)
                                             .then((erg){
                                                 setState((){ 
                                                     labelMessage = erg.Content;
@@ -70,7 +73,7 @@ class _SignupPageWithState extends State<SignupPage> {
                             });
                         })
                         .then((key){
-                            userAPI.Signup(usernameController.text, passwordController.text, key)
+                            userAPI.Signup(username, password, key)
                                 .then((erg){
                                     setState((){
                                         labelMessage = erg.Content;
@@ -88,6 +91,7 @@ class _SignupPageWithState extends State<SignupPage> {
                 labelMessage = "Confirm password and password boxes not matching.";
             });
         }
+      }
     }
     /*
         Responsible for allowing transition back to the login screen.
