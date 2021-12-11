@@ -1,4 +1,10 @@
 import 'user.dart';
+
+/*
+    This class represents a message object. 
+    The message object requires the message's id in the messages db table,
+    the content of the message and the sender and recipient of the message.
+*/
 class Message {
     num _message_id;
     String _content;
