@@ -24,7 +24,7 @@ def create_route(app): # This procedure is called by the server to start listeni
                     if len(users_with_name) == 0: # Check if user with given username doesn't already exist
                         try:
                             # Try and put in new user information in user table and new key in the key table
-                            db.execute("INSERT INTO users (username, password, last_seen) VALUES (?, ?, ?)", [username, password, 0])
+                            db.execute("INSERT INTO users (username, password, time_created) VALUES (?, ?, ?)", [username, password, 0])
                             user_id = db.get_last_row_id() # Get auto incremented user_id from inserting into users. This is used for the foreign key in the keys table
                             db.execute("INSERT INTO keys (user_id, pub_key) VALUES (?,?)", [user_id, pub_key])
                         except:

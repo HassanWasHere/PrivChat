@@ -27,11 +27,11 @@ class User:
         else:
             return False
     # This is the class constructor. All their information is stored over here.
-    def __init__(self, user_id, username, password, last_seen, avatar):
+    def __init__(self, user_id, username, password, time_created, avatar):
         self.__user_id = user_id
         self.__username = username
         self.__password = password
-        self.__last_seen = last_seen
+        self.__time_created = time_created
         self.__avatar = avatar
         self.__valid_session = False
         self.__db = dbhandler.Database("privchat.db")
