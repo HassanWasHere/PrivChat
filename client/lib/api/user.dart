@@ -118,3 +118,25 @@ Future<Client> createClientFromUsernameAndPassword(String user_name, String pass
     }
     
 }
+
+/*
+  This function is a local check on the username and password. This is rechecked
+  on the server anyway. But we will check it here first to reduce the number of 
+  requests to the server where possible.
+*/
+
+bool validCredentials(String username, String password){
+  bool isUsernameAvailable = true;
+  bool isPasswordAvailable = true;
+  RegExp validCharacters = RegExp(r'^[a-zA-Z0-9]+$');
+  if (username.length > 10){
+    isUsernameAvailable = false;
+  };
+  if (password.length > 12){
+    isPasswordAvailable = false;
+  }
+  if (!validCharacters.hasMatch(username)){
+    isUsernameAvailable = false;
+  }
+  return (isUsernameAvailable && isPasswordAvailable);
+}

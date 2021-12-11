@@ -25,6 +25,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageWithState extends State<LoginPage> {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
+    String labelMessage = "";
 
     /* 
         The SignupTransition procedure allows the program to transition to the signup screen
@@ -52,12 +53,19 @@ class _LoginPageWithState extends State<LoginPage> {
     */
 
     void ProcessLogin(BuildContext ctx){
-        
-        userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
+        if (userAPI.validCredentials(usernameController.text, passwordController.text)){
+          print("VALID CRED");
+          userAPI.createClientFromUsernameAndPassword(usernameController.text, passwordController.text).then((thisUser){
             WebSocket(thisUser, (String data, WebSocket self){
                 MessageListTransition(ctx, thisUser, data, self);
             });
-        });
+          }).catchError((e){
+            setState(() => labelMessage = e.toString());
+          });
+        } else {
+            setState(() => labelMessage = "Invalid username or password");
+        }
+        
     }
 
     @override
@@ -87,6 +95,7 @@ class _LoginPageWithState extends State<LoginPage> {
                                 )
                             ),
                             SizedBox(height: 36.0),
+                            Text("$labelMessage"),
                             InputBox(70, 360, false, "Username", usernameController).build(ctx),
                             InputBox(70, 360, true, "Password", passwordController).build(ctx),
                             LargeButton(65.0, 360.0, "Login", ProcessLogin).build(ctx),

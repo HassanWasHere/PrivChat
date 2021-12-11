@@ -16,7 +16,7 @@ def create_route(app): # This procedure is called by the server to start listeni
             if request_data:
                 username = validate_input.valid_username(request_data["username"]) # Make sure username, password and public key are correct
                 password = validate_input.valid_password(request_data["password"])
-                pub_key = validate_input.valid_pubkey(request_data["pubkey"])
+                pub_key = request_data["pubkey"]#validate_input.valid_pubkey(request_data["pubkey"])
                 if username and password and pub_key: # If the validation is successful
                     password = password_hash.hash_password(password) # Perform a cryptographic hash on the password to store it
                     db = dbhandler.Database("privchat.db") # Establish connection to database
