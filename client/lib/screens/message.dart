@@ -54,11 +54,11 @@ class _MessagePageWithState extends State<MessagePage> {
                     DecryptMessage(data[1], privateKey)
                     .then((content){
                         setState( (){
-                            widget.currentConversation.add_message(-1, content, other_user, widget.thisUser);
+                            widget.currentConversation.add_message(-1, content, other_user, widget.thisUser, DateTime.now().millisecondsSinceEpoch);
                         });
                     })
                     .catchError((e){
-                        setState( () => widget.currentConversation.add_message(-1, e.cause, other_user, widget.thisUser));
+                        setState( () => widget.currentConversation.add_message(-1, e.cause, other_user, widget.thisUser, DateTime.now().millisecondsSinceEpoch));
                     });
                 });
                 
@@ -83,7 +83,7 @@ class _MessagePageWithState extends State<MessagePage> {
             widget.socket.get_socket().emitWithAck("message", [other_user.get_user_id(), content], ack: (message_id){
                 storeMessage(message_id, original_message);
                 setState((){
-                    widget.currentConversation.add_message(message_id, original_message, widget.thisUser, other_user);
+                    widget.currentConversation.add_message(message_id, original_message, widget.thisUser, other_user, DateTime.now().millisecondsSinceEpoch);
                 });
             });
             

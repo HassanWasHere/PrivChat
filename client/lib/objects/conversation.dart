@@ -7,8 +7,8 @@ class Conversation {
     User _other_user;
     List<Message> _messages = <Message>[];
 
-    void add_message(num message_id, String content, User sender, User recipient){
-        this._messages.add(Message(message_id, content, sender, recipient));
+    void add_message(num message_id, String content, User sender, User recipient, double time_sent){
+        this._messages.add(Message(message_id, content, sender, recipient, time_sent));
     }
 
     Conversation(@required this._other_user);

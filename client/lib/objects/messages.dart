@@ -10,8 +10,9 @@ class Message {
     String _content;
     User _sender;
     User _recipient;
+    double _time_sent;
 
-    Message(this._message_id, this._content, this._sender, this._recipient);
+    Message(this._message_id, this._content, this._sender, this._recipient, this._time_sent);
 
     num get_message_id(){
         return this._message_id;
@@ -24,5 +25,8 @@ class Message {
     }
     User get_recipient(){
         return this._recipient;
+    }
+    String get_time_sent(){
+        return this._time_sent.toString();
     }
 }
