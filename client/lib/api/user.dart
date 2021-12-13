@@ -129,10 +129,10 @@ bool validCredentials(String username, String password){
   bool isUsernameAvailable = true;
   bool isPasswordAvailable = true;
   RegExp validCharacters = RegExp(r'^[a-zA-Z0-9]+$');
-  if (username.length > 10){
+  if (username.length > 10 || username.length == 0){
     isUsernameAvailable = false;
   };
-  if (password.length > 12){
+  if (password.length > 12 || password.length == 0){
     isPasswordAvailable = false;
   }
   if (!validCharacters.hasMatch(username)){

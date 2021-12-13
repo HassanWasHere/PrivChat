@@ -142,7 +142,7 @@ class _MessagePageWithState extends State<MessagePage> {
                                         itemBuilder: (context, index) {
                                             var message = currentConversation.get_messages()[currentConversation.get_messages().length-1-index];
                                             var sender = message.get_sender();
-                                            var colour = sender.get_user_id() == widget.thisUser.get_user_id() ? Colors.white : Colors.green.shade200;
+                                            var colour = sender.get_user_id() == widget.thisUser.get_user_id() ? Colors.grey : Colors.green.shade200;
                                             return Padding(
                                                 padding: EdgeInsets.only(bottom: 8),
                                                 child: Align(

@@ -88,9 +88,13 @@ class _SignupPageWithState extends State<SignupPage> {
             });
         } else {
             setState((){
-                labelMessage = "Confirm password and password boxes not matching.";
+                labelMessage = "Invalid username or password";
             });
         }
+      } else {
+          setState((){
+              labelMessage = "Password boxes not matching";
+          });   
       }
     }
     /*
