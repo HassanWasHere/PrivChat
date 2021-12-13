@@ -77,5 +77,5 @@ class User:
     # This function simply adds a new message into the database. The WebSocket server will
     # forward it to the correct WebSocket aswell.
     def send_message(self, recipient_id, content):
-        self.__db.execute("INSERT INTO messages (content, time_sent, sender_id, recipient_id) VALUES (?,?,?,?)", [content, time(), self.__user_id, recipient_id])
+        self.__db.execute("INSERT INTO messages (content, time_sent, sender_id, recipient_id) VALUES (?,?,?,?)", [content, round(time() * 1000), self.__user_id, recipient_id])
         return self.__db.get_last_row_id()

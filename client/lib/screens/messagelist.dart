@@ -58,12 +58,13 @@ class _MessageListPageWithState extends State<MessageListPage> {
                     var newConversation = Conversation(otherUser);
                     message_list.forEach((message){
                         var sender_id = message['sender_id'];
+                        var time_sent = message['time_sent'];
                         getMessage(message['message_id'])
                         .then((alreadycontent){
                             if (other_user_id.toString() == message['sender_id'].toString()){
-                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, otherUser, widget.thisUser, message['time_sent']));
+                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, otherUser, widget.thisUser, time_sent));
                             } else {
-                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, widget.thisUser, otherUser, message['time_sent']));
+                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, widget.thisUser, otherUser, time_sent));
                             };
                         })
                         .catchError((e){
@@ -71,13 +72,13 @@ class _MessageListPageWithState extends State<MessageListPage> {
                             .then((content){
                                 storeMessage(message['message_id'], content);
                                 if (other_user_id.toString() == message['sender_id'].toString()){
-                                    setState( () => newConversation.add_message(message['message_id'], content, otherUser, widget.thisUser, message['time_sent']));
+                                    setState( () => newConversation.add_message(message['message_id'], content, otherUser, widget.thisUser, time_sent));
                                 } else {
-                                    setState( () => newConversation.add_message(message['message_id'], content, widget.thisUser, otherUser, message['time_sent']));
+                                    setState( () => newConversation.add_message(message['message_id'], content, widget.thisUser, otherUser, time_sent));
                                 };
                             })
                             .catchError((e){
-                                setState( () => newConversation.add_message(message['message_id'], e.cause, otherUser, widget.thisUser, message['time_sent']));
+                                setState( () => newConversation.add_message(message['message_id'], e.cause, otherUser, widget.thisUser, time_sent));
                             });
                         });
                         

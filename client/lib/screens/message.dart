@@ -126,7 +126,7 @@ class _MessagePageWithState extends State<MessagePage> {
             ),
             body: Center(
                 child: Container (
-                    padding: EdgeInsets.all(36.0),
+                    padding: EdgeInsets.only(bottom: 36.0, top: 36.0),
                     child: Column (
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -142,12 +142,12 @@ class _MessagePageWithState extends State<MessagePage> {
                                         itemBuilder: (context, index) {
                                             var message = currentConversation.get_messages()[currentConversation.get_messages().length-1-index];
                                             var sender = message.get_sender();
-                                            var colour = sender.get_user_id() == widget.thisUser.get_user_id() ? Colors.grey : Colors.green.shade200;
+                                            var isme = sender.get_user_id() == widget.thisUser.get_user_id();
                                             return Padding(
                                                 padding: EdgeInsets.only(bottom: 8),
                                                 child: Align(
-                                                    child: Bubble(sender.get_username(), message.get_content(), colour).build(ctx),
-                                                    alignment: sender.get_user_id() == widget.thisUser.get_user_id() ? Alignment.topRight : Alignment.topLeft,
+                                                    child: Bubble(sender.get_username(), message.get_content(), isme, message.get_time_sent()).build(ctx),
+                                                    alignment: isme ? Alignment.topRight : Alignment.topLeft,
                                                 )
                                             );
                                         }
