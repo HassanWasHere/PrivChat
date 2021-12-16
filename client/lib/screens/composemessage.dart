@@ -4,13 +4,20 @@ import '../../widgets/large_button.dart';
 import 'signup.dart';
 import 'transition.dart' as TransitionHandler;
 import '../../api/user.dart' as userAPI;
-import '../../api/message.dart' as messageAPI;
 import '../../objects/client.dart';
 import '../../objects/conversation.dart';
 import '../../objects/user.dart';
 import '../../objects/websocket.dart';
 import 'messagelist.dart';
 import 'message.dart';
+
+/*
+    The purpose of this page is to allow the user to begin a new conversation.
+    The user is able to enter the username of the other user they would like to message,
+    the API will check if this user exists or not. If they do, then it will generate a new
+    conversation and transition the user to the MessagePage so they can begin
+    sending messaging and recieving messages with this user.
+*/
 class ComposePage extends StatefulWidget {
     Client thisUser;
     WebSocket socket;
@@ -24,13 +31,18 @@ class ComposePage extends StatefulWidget {
 class _ComposePageWithState extends State<ComposePage> {
     final usernameController = TextEditingController();
     String error = "";
+    /*
+        This procedure is called when the user presses send message. The procedure
+        fetches the username from the username box, checks if the user exists, and if
+        they do, then it will transition the user to the message page.
+    */
     void MessageUser(BuildContext ctx){
         String username = usernameController.text;
         userAPI.createUserFromUsername(username)
         .then((User other_user){
             Conversation newConversation = Conversation(other_user);
-            var conversationPage = MessagePage(widget.thisUser, newConversation, widget.socket);
-            TransitionHandler.Transition(ctx, conversationPage);
+            var messageView = MessagePage(widget.thisUser, newConversation, widget.socket);
+            TransitionHandler.Transition(ctx, messageView);
         })
         .catchError((e) {
             setState((){
@@ -38,7 +50,9 @@ class _ComposePageWithState extends State<ComposePage> {
             });
         });
     }
-
+    /*
+        Procedure called to build the UI
+    */
     @override
     Widget build(BuildContext ctx){
         

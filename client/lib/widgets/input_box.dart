@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/* This class represents an input box.
+This input box will be used to allow the user to input data from username and password
+to the content of the message the user would like to send
+*/
+
 class InputBox {
     bool password = false;
     String hintText = "An error occured";

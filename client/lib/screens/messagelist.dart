@@ -12,8 +12,21 @@ import 'message.dart';
 import 'composemessage.dart';
 import '../handlers/encrypt.dart';
 import '../handlers/storage.dart';
+/*
+    These classes are responsible for building a dynamic message page.
+    The message page needs to be dynamic so new conversations and messages can be 
+    shown to the user. 
+*/
 class MessageListPage extends StatefulWidget {
 
+    /* 
+        Response is the result from the login screen after fetching conversations through the 
+        websocket by sending 'Conversations'. 
+        This response data is then JSON decoded and parsed. 
+        Conversations and messages are created using this data. 
+        Socket represents the WebSocket where data is sent between the sevrer and the client.
+        thisUser represents the user that is currently logged in.
+    */
     String Response;
     WebSocket socket;
     Client thisUser;
@@ -28,7 +41,14 @@ class MessageListPage extends StatefulWidget {
 
 class _MessageListPageWithState extends State<MessageListPage> {
     var Conversations = <Conversation>[];
-    String test = '';
+    /*
+        The loadConversations procedure is responsible for parsing the message data
+        It creates conversation objects, filled with message objects.
+        When adding a new conversation to the list, we call setState() so that the UI knows it needs to
+        update.
+        For each message, we first see if the message exists in cached form in local storage. If it does exist then
+        
+    */
     void loadConversations(String data, _){
         Conversations = <Conversation>[];
         var conversationsJSON = jsonDecode(data);
@@ -38,12 +58,13 @@ class _MessageListPageWithState extends State<MessageListPage> {
                     var newConversation = Conversation(otherUser);
                     message_list.forEach((message){
                         var sender_id = message['sender_id'];
+                        var time_sent = message['time_sent'];
                         getMessage(message['message_id'])
                         .then((alreadycontent){
                             if (other_user_id.toString() == message['sender_id'].toString()){
-                                setState( () => newConversation.addMessage(message['message_id'], alreadycontent, otherUser, widget.thisUser));
+                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, otherUser, widget.thisUser, time_sent));
                             } else {
-                                setState( () => newConversation.addMessage(message['message_id'], alreadycontent, widget.thisUser, otherUser));
+                                setState( () => newConversation.add_message(message['message_id'], alreadycontent, widget.thisUser, otherUser, time_sent));
                             };
                         })
                         .catchError((e){
@@ -51,13 +72,13 @@ class _MessageListPageWithState extends State<MessageListPage> {
                             .then((content){
                                 storeMessage(message['message_id'], content);
                                 if (other_user_id.toString() == message['sender_id'].toString()){
-                                    setState( () => newConversation.addMessage(message['message_id'], content, otherUser, widget.thisUser));
+                                    setState( () => newConversation.add_message(message['message_id'], content, otherUser, widget.thisUser, time_sent));
                                 } else {
-                                    setState( () => newConversation.addMessage(message['message_id'], content, widget.thisUser, otherUser));
+                                    setState( () => newConversation.add_message(message['message_id'], content, widget.thisUser, otherUser, time_sent));
                                 };
                             })
                             .catchError((e){
-                                setState( () => newConversation.addMessage(message['message_id'], e.cause, otherUser, widget.thisUser));
+                                setState( () => newConversation.add_message(message['message_id'], e.cause, otherUser, widget.thisUser, time_sent));
                             });
                         });
                         
@@ -70,17 +91,21 @@ class _MessageListPageWithState extends State<MessageListPage> {
         });
         
     }
+    /*
+        This is called when the state is created. This is here instead of build so these aren't called everytime the UI needs to be updated.
+        This will load the conversations and make it so when the WebSocket returns the conversation data, loadConversations is called
+    */
     void initState(){
         super.initState();
         loadConversations(widget.Response, null);
         widget.socket.updateMessageCallback = loadConversations;
     }
-
+    // This procedure will make the program move onto the Message view page
     void showConversation(BuildContext ctx, Conversation conversation){
         var conversationPage = MessagePage(widget.thisUser, conversation, widget.socket);
         TransitionHandler.Transition(ctx, conversationPage);
     }
-
+    // This procedure will make the program move onto the new Message view page
     void createMessage(BuildContext ctx){
         var composePage = ComposePage(widget.thisUser, widget.socket);
         TransitionHandler.Transition(ctx, composePage);
@@ -103,15 +128,17 @@ class _MessageListPageWithState extends State<MessageListPage> {
                             itemCount: Conversations.length,
                                 itemBuilder: (context, index) {
                                     var conversation = Conversations[index];
+                                    var other_user = conversation.get_other_user();
+                                    var messages = conversation.get_messages();
                                     String messageContent;
-                                    if (conversation.getMessages().length == 0){
+                                    if (messages.length == 0){
                                         messageContent = "No messages sent to this user";
                                     } else {
-                                        messageContent = conversation.getMessages()[conversation.getMessages().length-1].content;
+                                        messageContent = messages[messages.length-1].get_content();
                                     }
                                     
                                     return ListTile(
-                                        title: Text(conversation.other_user.username),
+                                        title: Text(other_user.get_username()),
                                         subtitle: Text(messageContent),
                                         onTap: (){showConversation(ctx, conversation);}
                                     );

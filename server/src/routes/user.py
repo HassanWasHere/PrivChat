@@ -4,6 +4,10 @@ import json
 from src.database import dbhandler
 from src.models import users
 
+# This is the user HTTP REST API endpoint.
+# When the user sends a request to this endpoint with a user_id or username
+# The endpoint will retrieve the user's information and their public key from the database
+# Encode this in JSON format then return it to the server.
 def create_route(app):
     @app.route("/user", methods=["GET", "POST"])
     def user():

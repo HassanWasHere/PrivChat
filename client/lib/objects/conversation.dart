@@ -4,16 +4,20 @@ import 'user.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 class Conversation {
-    User other_user;
-    List<Message> messages = <Message>[];
+    User _other_user;
+    List<Message> _messages = <Message>[];
 
-    void addMessage(num message_id, String content, User sender, User recipient){
-        messages.add(Message(message_id, content, sender, recipient));
+    void add_message(num message_id, String content, User sender, User recipient, int time_sent){
+        this._messages.add(Message(message_id, content, sender, recipient, time_sent));
     }
 
-    Conversation(@required this.other_user);
+    Conversation(@required this._other_user);
 
-    List<Message> getMessages(){
-        return this.messages;
+    List<Message> get_messages(){
+        return this._messages;
+    }
+
+    User get_other_user(){
+        return this._other_user;
     }
 }
