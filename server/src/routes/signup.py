@@ -33,7 +33,7 @@ def create_route(app): # This procedure is called by the server to start listeni
                     else:
                         return "User with name already exists", 403
                 else:
-                    return "No username and password given to server", 405
+                    return "Invalid username or password", 405
         else:
             return "Please do not spam user accounts", 406
             

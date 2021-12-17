@@ -22,9 +22,5 @@ class Server(flask.Flask):
         wss_server = sockets.WebSocketServer(self.__socketio)
         wss_server.create_socket_routes()
     def start(self):
-        self.__socketio.run(app, host="localhost", port=8080)
+        self.__socketio.run(self, host="localhost", port=8080)
 
-app = Server()
-app.setup_routes()
-app.setup_websockets()
-app.start()

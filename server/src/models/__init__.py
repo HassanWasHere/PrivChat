@@ -3,7 +3,6 @@ import os
 import glob
 
 db = dbhandler.Database("privchat.db")
-print("HELLO?") 
-for f in glob.glob("**/*.sql", recursive=True):
-    f = open(f, "r")
-    db.execute_script(f.read())
+for f in glob.glob("**/*.ddl", recursive=True): # Scan directory for files ending in .ddl
+    f = open(f, "r") # Open it in read mode
+    db.execute_script(f.read()) # Execute the DDL script
